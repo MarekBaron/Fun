@@ -10,7 +10,7 @@ namespace Mandelbrot
 {
     public class CPUGenerator
     {
-        public byte[] Generate(int aWidth, int aHeight, float aSetStartX, float aSetWidth, float aSetStartY, float aSetHeight)
+        public byte[] Generate(int aWidth, int aHeight, float aSetStartX, float aSetWidth, float aSetStartY, float aSetHeight, byte[] aPalette)
         {
             byte[] rgbaValues = new byte[aWidth * aHeight * 4];
             float x_step = aSetWidth / aWidth;
@@ -34,9 +34,13 @@ namespace Mandelbrot
                         x = tempX;
                         iteration++;
                     }
-                    rgbaValues[bitmapPointer++] = iteration; //B
-                    rgbaValues[bitmapPointer++] = iteration; //G
-                    rgbaValues[bitmapPointer++] = iteration; //R
+                    if (iteration > 250)
+                    {
+
+                    }
+                    rgbaValues[bitmapPointer++] = aPalette[3 * iteration]; //B
+                    rgbaValues[bitmapPointer++] = aPalette[3 * iteration + 1] ; //G
+                    rgbaValues[bitmapPointer++] = aPalette[3 * iteration + 2]; //R
                     rgbaValues[bitmapPointer++] = 255; //A                 
                 }
 

@@ -21,12 +21,27 @@ namespace Mandelbrot
         private float _setWidth = 3.5f;
         private bool _redrawing = false;
         private bool _needsAnotherRedraw = false;
+        private byte[] _palette = null;
 
 
         public Form1()
         {
+            _palette = CreatePalette();
             InitializeComponent();
             Redraw();
+        }
+
+        private byte[] CreatePalette()
+        {
+            byte[] p = new byte[256 * 3];
+
+            for (int i = 0; i < 256; i++)
+            {
+                p[3 * i] = p[3 * i + 1] = p[3 * i + 2] = (byte)i;
+                //p[i] = p[i + 2] = (byte)i;
+            }
+
+            return p;
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -60,7 +75,7 @@ namespace Mandelbrot
             {                
                 Stopwatch sw = new Stopwatch();
                 sw.Start();                
-                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setWidth * bitmap.Height / bitmap.Width);
+                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setWidth * bitmap.Height / bitmap.Width, _palette);
                 sw.Stop();
                 RefreshElapsedTime(sw.ElapsedMilliseconds);
 
@@ -85,6 +100,7 @@ namespace Mandelbrot
 
         }
 
+        #region InvokeRedraw
         private delegate void InvokeInternalRedrawDelegate();
 
         private void InvokeInternalRedraw()
@@ -97,7 +113,8 @@ namespace Mandelbrot
             {
                 InternalRedraw();
             }
-        } 
+        }  
+        #endregion
 
         #region WriteText
         //private delegate void WriteTextDelegate(string aText);
