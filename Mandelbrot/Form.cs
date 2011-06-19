@@ -10,7 +10,7 @@ using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace MandelbrotCL
+namespace Mandelbrot
 {
     public partial class Form1 : Form
     {
@@ -19,48 +19,22 @@ namespace MandelbrotCL
         private float _setStartX = -2.25f;
         private float _setStartY = -1;
         private float _setWidth = 3.5f;
-        private float _setHeight = 2;
         private bool _redrawing = false;
         private bool _needsAnotherRedraw = false;
+
 
         public Form1()
         {
             InitializeComponent();
-            Redraw3();
+            Redraw();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            Redraw3();
+            Redraw();
         }
 
         private void Redraw()
-        {
-            var bitmap = (Bitmap)pictureBox1.Image;
-            if (bitmap == null || bitmap.Width != pictureBox1.Width || bitmap.Height != pictureBox1.Height)
-            {
-                bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-                pictureBox1.Image = bitmap;
-            }
-
-            Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-            BitmapData bmpData =
-                bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
-                bitmap.PixelFormat);
-
-            IntPtr ptr = bmpData.Scan0;
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            var rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setHeight);
-            sw.Stop();
-            lblGenerationTime.Text = sw.ElapsedMilliseconds.ToString() + " ms";
-            // Copy the RGB values back to the bitmap            
-            System.Runtime.InteropServices.Marshal.Copy(rgbaValues, 0, ptr, rgbaValues.Length);
-            // Unlock the bits.
-            bitmap.UnlockBits(bmpData);
-        }
-
-        private void Redraw3()
         {
             if (!_redrawing)
             {
@@ -85,8 +59,8 @@ namespace MandelbrotCL
             //var genTask = Task.Factory.StartNew(() =>
             //{
                 Stopwatch sw = new Stopwatch();
-                sw.Start();
-                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setHeight);
+                sw.Start();                
+                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setWidth * bitmap.Height / bitmap.Width);//_setHeight);
                 sw.Stop();
                 RefreshElapsedTime(sw.ElapsedMilliseconds);
 
