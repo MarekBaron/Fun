@@ -41,7 +41,7 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(883, 467);
+            this.pictureBox1.Size = new System.Drawing.Size(907, 512);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -49,7 +49,7 @@
             // 
             this.lblGenerationTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblGenerationTime.AutoSize = true;
-            this.lblGenerationTime.Location = new System.Drawing.Point(860, 506);
+            this.lblGenerationTime.Location = new System.Drawing.Point(884, 551);
             this.lblGenerationTime.Name = "lblGenerationTime";
             this.lblGenerationTime.Size = new System.Drawing.Size(35, 13);
             this.lblGenerationTime.TabIndex = 1;
@@ -60,7 +60,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(907, 528);
+            this.ClientSize = new System.Drawing.Size(931, 573);
             this.Controls.Add(this.lblGenerationTime);
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";

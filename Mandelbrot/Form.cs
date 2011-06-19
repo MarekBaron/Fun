@@ -30,25 +30,25 @@ namespace Mandelbrot
         }
 
         private void Form1_Resize(object sender, EventArgs e)
-        {
+        {          
             Redraw();
         }
 
         private void Redraw()
         {
             if (!_redrawing)
-            {
-                InternalRedraw();
+            {         
+                InvokeInternalRedraw();             
             }
             else
-            {
+            {                
                 _needsAnotherRedraw = true;
             }
         }
 
         private void InternalRedraw()
         {
-            _redrawing = true;
+            _redrawing = true;            
             var bitmap = (Bitmap)pictureBox1.Image;
             if (bitmap == null || bitmap.Width != pictureBox1.Width || bitmap.Height != pictureBox1.Height)
             {
@@ -56,11 +56,11 @@ namespace Mandelbrot
                 pictureBox1.Image = bitmap;
             }
 
-            //var genTask = Task.Factory.StartNew(() =>
-            //{
+            var genTask = Task.Factory.StartNew(() =>
+            {                
                 Stopwatch sw = new Stopwatch();
                 sw.Start();                
-                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setWidth * bitmap.Height / bitmap.Width);//_setHeight);
+                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setWidth * bitmap.Height / bitmap.Width);
                 sw.Stop();
                 RefreshElapsedTime(sw.ElapsedMilliseconds);
 
@@ -76,13 +76,46 @@ namespace Mandelbrot
                 pictureBox1.Invalidate();
                 _redrawing = false;
                 if (_needsAnotherRedraw)
-                {
+                {                    
                     _needsAnotherRedraw = false;
-                    InternalRedraw();
+                    InvokeInternalRedraw();
                 }
-            //});
+                
+            });
 
         }
+
+        private delegate void InvokeInternalRedrawDelegate();
+
+        private void InvokeInternalRedraw()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new InvokeInternalRedrawDelegate(InvokeInternalRedraw));
+            }
+            else
+            {
+                InternalRedraw();
+            }
+        } 
+
+        #region WriteText
+        //private delegate void WriteTextDelegate(string aText);
+
+        //private void WriteText(string aText)
+        //{
+        //    if (tbConsole.InvokeRequired)
+        //    {
+        //        tbConsole.Invoke(new WriteTextDelegate(WriteText), aText);
+        //    }
+        //    else
+        //    {
+        //        var newLines = tbConsole.Lines.ToList();
+        //        newLines.Add(aText);
+        //        tbConsole.Lines = newLines.ToArray();
+        //    }
+        //} 
+        #endregion
 
         #region GenerationTime label
         private delegate void RefreshElapsedTimeDelegate(long anElapsedMiliseconds);
