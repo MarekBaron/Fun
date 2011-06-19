@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 
-namespace MandelbrotCL
+namespace Mandelbrot
 {
     public class CPUGenerator
     {

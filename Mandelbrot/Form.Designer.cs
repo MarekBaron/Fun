@@ -1,4 +1,4 @@
-﻿namespace MandelbrotCL
+﻿namespace Mandelbrot
 {
     partial class Form1
     {
