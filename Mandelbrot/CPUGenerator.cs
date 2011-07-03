@@ -34,14 +34,10 @@ namespace Mandelbrot
                         x = tempX;
                         iteration++;
                     }
-                    if (iteration > 250)
-                    {
-
-                    }
-                    rgbaValues[bitmapPointer++] = aPalette[3 * iteration]; //B
-                    rgbaValues[bitmapPointer++] = aPalette[3 * iteration + 1] ; //G
-                    rgbaValues[bitmapPointer++] = aPalette[3 * iteration + 2]; //R
-                    rgbaValues[bitmapPointer++] = 255; //A                 
+                    rgbaValues[bitmapPointer++] = aPalette[4 * iteration]; //B
+                    rgbaValues[bitmapPointer++] = aPalette[4 * iteration + 1] ; //G
+                    rgbaValues[bitmapPointer++] = aPalette[4 * iteration + 2]; //R
+                    rgbaValues[bitmapPointer++] = aPalette[4 * iteration + 3]; //A                 
                 }
 
             }

@@ -12,6 +12,14 @@ using System.Threading.Tasks;
 
 namespace Mandelbrot
 {
+    internal enum Channel
+    {
+        B = 0,
+        G = 1,
+        R = 2,
+        A = 3
+    }
+
     public partial class Form1 : Form
     {
         private CPUGenerator cpuGen = new CPUGenerator();
@@ -33,15 +41,31 @@ namespace Mandelbrot
 
         private byte[] CreatePalette()
         {
-            byte[] p = new byte[256 * 3];
+            byte[] p = new byte[256 * 4];
 
-            for (int i = 0; i < 256; i++)
-            {
-                p[3 * i] = p[3 * i + 1] = p[3 * i + 2] = (byte)i;
-                //p[i] = p[i + 2] = (byte)i;
-            }
+            FillChannelLinear(p, 0, 255, 255, 255, Channel.A);
 
+            FillChannelLinear(p, 0, 200, 100, 255, Channel.R);
+            FillChannelLinear(p, 0, 0, 100, 128, Channel.G);
+            FillChannelLinear(p, 0, 100, 100, 0, Channel.B);
+
+            FillChannelLinear(p, 100, 255, 200, 128, Channel.R);
+            FillChannelLinear(p, 100, 128, 200, 0, Channel.G);
+            FillChannelLinear(p, 100, 0, 200, 100, Channel.B);
+
+            FillChannelLinear(p, 200, 128, 255, 0, Channel.R);
+            FillChannelLinear(p, 200, 0, 255, 0, Channel.G);
+            FillChannelLinear(p, 200, 100, 255, 0, Channel.B);
             return p;
+        }        
+
+        private void FillChannelLinear(byte[] aPalette, int aStartIndex, byte aStartValue, int anEndIndex, byte anEndValue, Channel aChannelOffset)
+        {
+            float deltaValue = (anEndValue - aStartValue) / (float)(anEndIndex - aStartIndex);
+            for (int index = aStartIndex; index <= anEndIndex; index++)
+            {
+                aPalette[index * 4 + (int)aChannelOffset] = (byte)(aStartValue + deltaValue * (index - aStartIndex));
+            }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
