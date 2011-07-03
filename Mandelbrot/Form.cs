@@ -39,6 +39,8 @@ namespace Mandelbrot
             Redraw();
         }
 
+
+        #region Palette
         private byte[] CreatePalette()
         {
             byte[] p = new byte[256 * 4];
@@ -57,7 +59,7 @@ namespace Mandelbrot
             FillChannelLinear(p, 200, 0, 255, 0, Channel.G);
             FillChannelLinear(p, 200, 100, 255, 0, Channel.B);
             return p;
-        }        
+        }
 
         private void FillChannelLinear(byte[] aPalette, int aStartIndex, byte aStartValue, int anEndIndex, byte anEndValue, Channel aChannelOffset)
         {
@@ -66,10 +68,43 @@ namespace Mandelbrot
             {
                 aPalette[index * 4 + (int)aChannelOffset] = (byte)(aStartValue + deltaValue * (index - aStartIndex));
             }
-        }
+        } 
+        #endregion
 
         private void Form1_Resize(object sender, EventArgs e)
         {          
+            Redraw();
+        }
+
+        private PointF ScreenToSpace(int aScreenX, int aScreenY)
+        {
+            float coef = _setWidth / (float)pictureBox1.Width;
+            return new PointF(_setStartX + coef * aScreenX, _setStartY + coef * aScreenY);
+        }
+
+        private float SetWidthToSetHeight(float aSetWidth)
+        {
+            return aSetWidth * (float)pictureBox1.Height / (float)pictureBox1.Width;
+        }
+
+        void Form1_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            var mouseInSpace = ScreenToSpace(e.X - pictureBox1.Location.X, e.Y - pictureBox1.Location.Y);
+
+            var oldWidth = _setWidth;
+            var oldHeight = SetWidthToSetHeight(oldWidth);
+            var oldCenter = new PointF(_setStartX + oldWidth / 2f, _setStartY + oldHeight / 2f);
+
+            if (e.Delta < 0)
+                _setWidth *= 1.1f;            
+            else            
+                _setWidth *= 0.9f;
+                       
+            float setHeight = SetWidthToSetHeight(_setWidth);
+
+            _setStartX = mouseInSpace.X - ((mouseInSpace.X - _setStartX) * _setWidth / oldWidth);
+            _setStartY = mouseInSpace.Y - ((mouseInSpace.Y - _setStartY) * setHeight / oldHeight);
+
             Redraw();
         }
 
@@ -99,7 +134,7 @@ namespace Mandelbrot
             {                
                 Stopwatch sw = new Stopwatch();
                 sw.Start();                
-                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, _setWidth * bitmap.Height / bitmap.Width, _palette);
+                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, SetWidthToSetHeight(_setWidth), _palette);
                 sw.Stop();
                 RefreshElapsedTime(sw.ElapsedMilliseconds);
 
