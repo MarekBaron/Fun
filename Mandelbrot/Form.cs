@@ -30,7 +30,7 @@ namespace Mandelbrot
         private bool _redrawing = false;
         private bool _needsAnotherRedraw = false;
         private byte[] _palette = null;
-
+        private Point _panStartPoint = Point.Empty;
 
         public Form1()
         {
@@ -44,20 +44,11 @@ namespace Mandelbrot
         private byte[] CreatePalette()
         {
             byte[] p = new byte[256 * 4];
-
-            FillChannelLinear(p, 0, 255, 255, 255, Channel.A);
-
-            FillChannelLinear(p, 0, 200, 100, 255, Channel.R);
-            FillChannelLinear(p, 0, 0, 100, 128, Channel.G);
-            FillChannelLinear(p, 0, 100, 100, 0, Channel.B);
-
-            FillChannelLinear(p, 100, 255, 200, 128, Channel.R);
-            FillChannelLinear(p, 100, 128, 200, 0, Channel.G);
-            FillChannelLinear(p, 100, 0, 200, 100, Channel.B);
-
-            FillChannelLinear(p, 200, 128, 255, 0, Channel.R);
-            FillChannelLinear(p, 200, 0, 255, 0, Channel.G);
-            FillChannelLinear(p, 200, 100, 255, 0, Channel.B);
+            FillLinear(p, 0, 40, Color.Blue, Color.GreenYellow);
+            FillLinear(p, 40, 100, Color.GreenYellow, Color.Orange);
+            FillLinear(p, 100, 200, Color.Orange, Color.Red);
+            FillLinear(p, 200, 254, Color.Red, Color.LightSkyBlue);
+            FillLinear(p, 255, 255, Color.Black, Color.Black);
             return p;
         }
 
@@ -68,7 +59,22 @@ namespace Mandelbrot
             {
                 aPalette[index * 4 + (int)aChannelOffset] = (byte)(aStartValue + deltaValue * (index - aStartIndex));
             }
-        } 
+        }
+
+        private void FillLinear(byte[] aPalette, int aStartIndex, int anEndIndex, Color aStartColor, Color anEndColor)
+        {
+            float indexDifference = anEndIndex - aStartIndex;
+            float deltaR = (anEndColor.R - aStartColor.R) / indexDifference;
+            float deltaG = (anEndColor.G - aStartColor.G) / indexDifference;
+            float deltaB = (anEndColor.B - aStartColor.B) / indexDifference;
+            for (int index = aStartIndex; index <= anEndIndex; index++)
+            {
+                aPalette[index * 4 + 0] = (byte)(aStartColor.B + deltaB * (index - aStartIndex));
+                aPalette[index * 4 + 1] = (byte)(aStartColor.G + deltaG * (index - aStartIndex));
+                aPalette[index * 4 + 2] = (byte)(aStartColor.R + deltaR * (index - aStartIndex));
+                aPalette[index * 4 + 3] = 255;
+            }
+        }
         #endregion
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -208,6 +214,27 @@ namespace Mandelbrot
             }
         }
         #endregion
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {   
+                var start = ScreenToSpace(_panStartPoint.X, _panStartPoint.Y);
+                var end = ScreenToSpace(e.Location.X, e.Location.Y);
+                _setStartX = _setStartX - (end.X - start.X);
+                _setStartY = _setStartY - (end.Y - start.Y);
+                _panStartPoint = e.Location;
+                Redraw();
+            }
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                _panStartPoint = e.Location;
+            }
+        }
 
     }
 }
