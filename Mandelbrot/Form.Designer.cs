@@ -1,4 +1,4 @@
-﻿namespace Mandelbrot
+﻿namespace Baron.Mandelbrot
 {
     partial class Form1
     {
@@ -30,6 +30,8 @@
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblGenerationTime = new System.Windows.Forms.Label();
+            this.cbxGenerator = new System.Windows.Forms.ComboBox();
+            this.lblGenerator = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,10 +43,11 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(907, 512);
+            this.pictureBox1.Size = new System.Drawing.Size(907, 525);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseEnter += new System.EventHandler(this.pictureBox1_MouseEnter);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             // 
             // lblGenerationTime
@@ -58,11 +61,34 @@
             this.lblGenerationTime.Text = "label1";
             this.lblGenerationTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // cbxGenerator
+            // 
+            this.cbxGenerator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbxGenerator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxGenerator.FormattingEnabled = true;
+            this.cbxGenerator.Location = new System.Drawing.Point(72, 543);
+            this.cbxGenerator.Name = "cbxGenerator";
+            this.cbxGenerator.Size = new System.Drawing.Size(351, 21);
+            this.cbxGenerator.TabIndex = 2;
+            this.cbxGenerator.SelectedIndexChanged += new System.EventHandler(this.cbxGenerator_SelectedIndexChanged);
+            // 
+            // lblGenerator
+            // 
+            this.lblGenerator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblGenerator.AutoSize = true;
+            this.lblGenerator.Location = new System.Drawing.Point(12, 546);
+            this.lblGenerator.Name = "lblGenerator";
+            this.lblGenerator.Size = new System.Drawing.Size(54, 13);
+            this.lblGenerator.TabIndex = 3;
+            this.lblGenerator.Text = "Generator";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(931, 573);
+            this.Controls.Add(this.lblGenerator);
+            this.Controls.Add(this.cbxGenerator);
             this.Controls.Add(this.lblGenerationTime);
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
@@ -79,6 +105,8 @@
 
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblGenerationTime;
+        private System.Windows.Forms.ComboBox cbxGenerator;
+        private System.Windows.Forms.Label lblGenerator;
     }
 }
 

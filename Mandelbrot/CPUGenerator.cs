@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 
-namespace Mandelbrot
+namespace Baron.Mandelbrot
 {
-    public class CPUGenerator
+    public class CPUGenerator : IGenerator
     {
         public byte[] Generate(int aWidth, int aHeight, float aSetStartX, float aSetWidth, float aSetStartY, float aSetHeight, byte[] aPalette)
         {
@@ -42,6 +42,11 @@ namespace Mandelbrot
 
             }
             return rgbaValues;
+        }        
+
+        public override string ToString()
+        {
+            return "Single threaded generator";
         }
     }
 }
