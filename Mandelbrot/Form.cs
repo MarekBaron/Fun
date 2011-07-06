@@ -10,7 +10,7 @@ using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Mandelbrot
+namespace Baron.Mandelbrot
 {
     internal enum Channel
     {
@@ -22,7 +22,7 @@ namespace Mandelbrot
 
     public partial class Form1 : Form
     {
-        private CPUGenerator cpuGen = new CPUGenerator();
+        private IGenerator _currentGenerator = null;
 
         private float _setStartX = -2.25f;
         private float _setStartY = -1;
@@ -36,7 +36,23 @@ namespace Mandelbrot
         {
             _palette = CreatePalette();
             InitializeComponent();
+            InitializeGenerators();
             Redraw();
+        }
+        
+        private void InitializeGenerators()
+        {
+            IGenerator[] generators = new IGenerator[]
+            {
+                new CPUGenerator(),
+                new MultiThreadedGenerator(),
+                new SimpleOpenCLGenerator()
+            };
+            foreach (var gen in generators)
+            {
+                cbxGenerator.Items.Add(gen);
+            }
+            cbxGenerator.SelectedIndex = 0;
         }
 
 
@@ -140,7 +156,7 @@ namespace Mandelbrot
             {                
                 Stopwatch sw = new Stopwatch();
                 sw.Start();                
-                byte[] rgbaValues = cpuGen.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, SetWidthToSetHeight(_setWidth), _palette);
+                byte[] rgbaValues = _currentGenerator.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, SetWidthToSetHeight(_setWidth), _palette);
                 sw.Stop();
                 RefreshElapsedTime(sw.ElapsedMilliseconds);
 
@@ -234,6 +250,17 @@ namespace Mandelbrot
             {
                 _panStartPoint = e.Location;
             }
+        }
+
+        private void cbxGenerator_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _currentGenerator = (IGenerator)(((ComboBox)sender).SelectedItem);
+            Redraw();
+        }
+
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox1.Focus();
         }
 
     }
