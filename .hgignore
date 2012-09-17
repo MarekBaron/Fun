@@ -1,0 +1,5 @@
+syntax: glob
+Mandelbrot/Mandelbrot.csproj.user
+syntax: regexp
+Mandelbrot/obj/*.*
+Mandelbrot/bin/*.*

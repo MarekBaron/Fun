@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Baron.Mandelbrot
 {
-    class SimpleOpenCLGenerator : IGenerator
+    class DoubleOpenCLGenerator : IGenerator
     {
         private void Initialize()
         {
@@ -50,12 +50,10 @@ namespace Baron.Mandelbrot
             return new ComputeBuffer<T>(_context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.CopyHostPointer, new T[] { aValue });
         }
 
-        public byte[] Generate(int aWidth, int aHeight, float aSetStartX, float aSetWidth, float aSetStartY, float aSetHeight, byte[] aPalette)
+        public byte[] Generate(int aWidth, int aHeight, double aSetStartX, double aSetWidth, double aSetStartY, double aSetHeight, byte[] aPalette)
         {
             if (!_initialized)
                 Initialize();
-
-           // _kernel.SetArgument(0, (IntPtr)sizeof(float), (IntPtr)aSetStartX);
 
             _kernel.SetMemoryArgument(0, ValueToComputeBuffer(aSetStartX));
             _kernel.SetMemoryArgument(1, ValueToComputeBuffer(aSetWidth / aWidth));
@@ -85,11 +83,13 @@ namespace Baron.Mandelbrot
         {
             return
             @"
+            #pragma OPENCL EXTENSION cl_khr_fp64 : enable
+
             kernel void Mandelbrot(
-                global  read_only float* setStartX,
-                global  read_only float* xStep,
-                global  read_only float* setStartY,
-                global  read_only float* yStep,
+                global  read_only double* setStartX,
+                global  read_only double* xStep,
+                global  read_only double* setStartY,
+                global  read_only double* yStep,
                 global  read_only uchar* palette,
                 global write_only uchar* rgbaValues)
             {
@@ -98,15 +98,15 @@ namespace Baron.Mandelbrot
                 int width = get_global_size(0);
                 int height = get_global_size(1);
 
-                float x0 = setStartX[0] + startX * xStep[0];
-                float y0 = setStartY[0] + startY * yStep[0];
+                double x0 = setStartX[0] + startX * xStep[0];
+                double y0 = setStartY[0] + startY * yStep[0];
                 uchar iteration = 0;
-                float x = 0;
-                float y = 0;
+                double x = 0;
+                double y = 0;
 
                 while (x * x + y * y <= 4 && iteration < 255)
                 {
-                    float tempX = x * x - y * y + x0;
+                    double tempX = x * x - y * y + x0;
                     y = 2 * x * y + y0;
                     x = tempX;
                     iteration++;
@@ -118,13 +118,13 @@ namespace Baron.Mandelbrot
                 rgbaValues[rgbaValuesIndex + 2] = palette[paletteIndex + 2];
                 rgbaValues[rgbaValuesIndex + 3] = palette[paletteIndex + 3];
             }
-            ";  
+            ";
         }
 
 
         public override string ToString()
         {
-            return "Simple OpenCL Generator";
+            return "Double OpenCL Generator";
         }
     }
 }
