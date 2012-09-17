@@ -20,13 +20,25 @@ namespace Baron.Mandelbrot
         A = 3
     }
 
+    internal struct PointD
+    {
+        public PointD(double aX, double aY) : this()
+        {
+            this.X = aX;
+            this.Y = aY;
+        }
+
+        public double X { get; private set; }
+        public double Y { get; private set; }
+    }
+
     public partial class Form1 : Form
     {
         private IGenerator _currentGenerator = null;
 
-        private float _setStartX = -2.25f;
-        private float _setStartY = -1;
-        private float _setWidth = 3.5f;
+        private double _setStartX = -2.25f;
+        private double _setStartY = -1;
+        private double _setWidth = 3.5f;
         private bool _redrawing = false;
         private bool _needsAnotherRedraw = false;
         private byte[] _palette = null;
@@ -44,7 +56,8 @@ namespace Baron.Mandelbrot
         {
             IGenerator[] generators = new IGenerator[]
             {
-                new SimpleOpenCLGenerator(),
+                new FloatOpenCLGenerator(),
+                new DoubleOpenCLGenerator(),
                 new CPUGenerator(),
                 new MultiThreadedGenerator()                
             };
@@ -98,15 +111,15 @@ namespace Baron.Mandelbrot
             Redraw();
         }
 
-        private PointF ScreenToSpace(int aScreenX, int aScreenY)
+        private PointD ScreenToSpace(int aScreenX, int aScreenY)
         {
-            float coef = _setWidth / (float)pictureBox1.Width;
-            return new PointF(_setStartX + coef * aScreenX, _setStartY + coef * aScreenY);
+            double coef = _setWidth / (double)pictureBox1.Width;
+            return new PointD(_setStartX + coef * aScreenX, _setStartY + coef * aScreenY);
         }
 
-        private float SetWidthToSetHeight(float aSetWidth)
+        private double SetWidthToSetHeight(double aSetWidth)
         {
-            return aSetWidth * (float)pictureBox1.Height / (float)pictureBox1.Width;
+            return aSetWidth * (double)pictureBox1.Height / (double)pictureBox1.Width;
         }
 
         void Form1_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -115,14 +128,13 @@ namespace Baron.Mandelbrot
 
             var oldWidth = _setWidth;
             var oldHeight = SetWidthToSetHeight(oldWidth);
-            var oldCenter = new PointF(_setStartX + oldWidth / 2f, _setStartY + oldHeight / 2f);
 
             if (e.Delta < 0)
                 _setWidth *= 1.1f;            
             else            
                 _setWidth *= 0.9f;
                        
-            float setHeight = SetWidthToSetHeight(_setWidth);
+            var setHeight = SetWidthToSetHeight(_setWidth);
 
             _setStartX = mouseInSpace.X - ((mouseInSpace.X - _setStartX) * _setWidth / oldWidth);
             _setStartY = mouseInSpace.Y - ((mouseInSpace.Y - _setStartY) * setHeight / oldHeight);
@@ -178,7 +190,7 @@ namespace Baron.Mandelbrot
                     if (_needsAnotherRedraw)
                     {
                         _needsAnotherRedraw = false;
-                        InvokeInternalRedraw();
+                        //InvokeInternalRedraw();
                     }
                 //}
             });

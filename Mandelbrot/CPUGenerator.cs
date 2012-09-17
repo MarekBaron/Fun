@@ -10,11 +10,11 @@ namespace Baron.Mandelbrot
 {
     public class CPUGenerator : IGenerator
     {
-        public byte[] Generate(int aWidth, int aHeight, float aSetStartX, float aSetWidth, float aSetStartY, float aSetHeight, byte[] aPalette)
+        public byte[] Generate(int aWidth, int aHeight, double aSetStartX, double aSetWidth, double aSetStartY, double aSetHeight, byte[] aPalette)
         {
             byte[] rgbaValues = new byte[aWidth * aHeight * 4];
-            float x_step = aSetWidth / aWidth;
-            float y_step = aSetHeight / aHeight;
+            double x_step = aSetWidth / aWidth;
+            double y_step = aSetHeight / aHeight;
 
             int bitmapPointer = 0;
             for (int screenY = 0; screenY < aHeight; screenY++)
@@ -22,14 +22,14 @@ namespace Baron.Mandelbrot
                 for (int screenX = 0; screenX < aWidth; screenX++)
                 {
 
-                    float x0 = aSetStartX + screenX * x_step;
-                    float y0 = aSetStartY + screenY * y_step;
+                    double x0 = aSetStartX + screenX * x_step;
+                    double y0 = aSetStartY + screenY * y_step;
                     byte iteration = 0;
-                    float x = 0;
-                    float y = 0;
+                    double x = 0;
+                    double y = 0;
                     while (x * x + y * y <= 4 && iteration < 255)
                     {
-                        float tempX = x * x - y * y + x0;
+                        double tempX = x * x - y * y + x0;
                         y = 2 * x * y + y0;
                         x = tempX;
                         iteration++;
