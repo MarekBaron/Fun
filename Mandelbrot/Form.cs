@@ -44,9 +44,9 @@ namespace Baron.Mandelbrot
         {
             IGenerator[] generators = new IGenerator[]
             {
+                new SimpleOpenCLGenerator(),
                 new CPUGenerator(),
-                new MultiThreadedGenerator(),
-                new SimpleOpenCLGenerator()
+                new MultiThreadedGenerator()                
             };
             foreach (var gen in generators)
             {
@@ -142,6 +142,8 @@ namespace Baron.Mandelbrot
             }
         }
 
+        private object _lockObject = new object();
+
         private void InternalRedraw()
         {
             _redrawing = true;            
@@ -153,30 +155,32 @@ namespace Baron.Mandelbrot
             }
 
             var genTask = Task.Factory.StartNew(() =>
-            {                
-                Stopwatch sw = new Stopwatch();
-                sw.Start();                
-                byte[] rgbaValues = _currentGenerator.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, SetWidthToSetHeight(_setWidth), _palette);
-                sw.Stop();
-                RefreshElapsedTime(sw.ElapsedMilliseconds);
+            {
+                //lock (_lockObject)
+                //{
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+                    byte[] rgbaValues = _currentGenerator.Generate(bitmap.Width, bitmap.Height, _setStartX, _setWidth, _setStartY, SetWidthToSetHeight(_setWidth), _palette);
+                    sw.Stop();
+                    RefreshElapsedTime(sw.ElapsedMilliseconds);
 
-                Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                BitmapData bmpData =
-                    bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                    bitmap.PixelFormat);
+                    Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                    BitmapData bmpData =
+                        bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                        bitmap.PixelFormat);
 
-                IntPtr ptr = bmpData.Scan0;
-                System.Runtime.InteropServices.Marshal.Copy(rgbaValues, 0, ptr, rgbaValues.Length);
-                // Unlock the bits.
-                bitmap.UnlockBits(bmpData);
-                pictureBox1.Invalidate();
-                _redrawing = false;
-                if (_needsAnotherRedraw)
-                {                    
-                    _needsAnotherRedraw = false;
-                    InvokeInternalRedraw();
-                }
-                
+                    IntPtr ptr = bmpData.Scan0;
+                    System.Runtime.InteropServices.Marshal.Copy(rgbaValues, 0, ptr, rgbaValues.Length);
+                    // Unlock the bits.
+                    bitmap.UnlockBits(bmpData);
+                    pictureBox1.Invalidate();
+                    _redrawing = false;
+                    if (_needsAnotherRedraw)
+                    {
+                        _needsAnotherRedraw = false;
+                        InvokeInternalRedraw();
+                    }
+                //}
             });
 
         }
