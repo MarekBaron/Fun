@@ -1,6 +1,10 @@
 syntax: glob
 Mandelbrot/Mandelbrot.csproj.user
 Mandelbrot/Mandelbrot.v11.suo
+IronyFortran/bin
+IronyFortran/obj
+IronyFortran/.vs/IronyFortran/v14/.suo
+IronyFortran/packages
 syntax: regexp
 Mandelbrot/obj/*.*
 Mandelbrot/bin/*.*
