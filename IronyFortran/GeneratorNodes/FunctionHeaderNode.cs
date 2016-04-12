@@ -22,7 +22,7 @@ namespace IronyFortran.GeneratorNodes
                 String.Join(", ", ParamNames.Select(n => "ref " + GetParamSignature(aContext, n)))));            
         }
 
-        public override void Init(AstContext context, ParseTreeNode treeNode)
+        protected override void InitInternal(AstContext context, ParseTreeNode treeNode)
         {
             ReturnType = MapType(treeNode.ChildNodes[0].Token.ValueString);
             Name = treeNode.ChildNodes[2].Token.ValueString;

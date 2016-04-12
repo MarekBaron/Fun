@@ -20,7 +20,7 @@ namespace IronyFortran.GeneratorNodes
             aSB.AppendLine(Indent(anIndent) + "}");
         }
 
-        public override void Init(AstContext context, ParseTreeNode treeNode)
+        protected override void InitInternal(AstContext context, ParseTreeNode treeNode)
         {
             HeaderNode = (FunctionHeaderNode)treeNode.ChildNodes[0].AstNode;
             StatementList = (StatementListNode)treeNode.ChildNodes[1].AstNode;
