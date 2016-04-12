@@ -5,6 +5,7 @@ IronyFortran/bin
 IronyFortran/obj
 IronyFortran/.vs/IronyFortran/v14/.suo
 IronyFortran/packages
+IronyFortran/Tests/TestData/*.output.cs
 syntax: regexp
 Mandelbrot/obj/*.*
 Mandelbrot/bin/*.*

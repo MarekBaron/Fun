@@ -58,6 +58,10 @@
     <Compile Include="GeneratorNodes\FunctionNode.cs" />
     <Compile Include="GeneratorNodes\NoGenerationNode.cs" />
     <Compile Include="GeneratorNodes\ProgramNode.cs" />
+    <Compile Include="GeneratorNodes\StatementListNode.cs" />
+    <Compile Include="GeneratorNodes\StatementNode.cs" />
+    <Compile Include="GeneratorNodes\Variable.cs" />
+    <Compile Include="GeneratorNodes\VariableDecNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\FunctionTranslatorTests.cs" />
   </ItemGroup>

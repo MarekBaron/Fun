@@ -31,8 +31,9 @@ namespace IronyFortran
                 return string.Empty;
             else
             {
+                var gc = BuildGenerationContext((ProgramNode)parseTree.Root.AstNode);
                 var sb = new StringBuilder();
-                ((ProgramNode)parseTree.Root.AstNode).Generate(0, sb);
+                ((ProgramNode)parseTree.Root.AstNode).Generate(gc, 0, sb);
                 return sb.ToString();
             }                        
         }
@@ -41,9 +42,14 @@ namespace IronyFortran
         {            
             var gc = new GenerationContext();
             foreach(var function in aProgramNode.Functions)
-            {
-                //todo funkcja powinna mieć statementsList - iterujemy przez nią, wybieramy variableDec i zapamiętujemy w GenerationContext
-                //GenerationContext przekazujemy do BaseNode.Generate (będzie potrzebny w FunctionHeaderNode i VariableDecNode)
+            {                
+                foreach(var varDecNode in function.StatementList.Statements.OfType<VariableDecNode>())
+                {
+                    foreach (var variable in varDecNode.Variables)
+                        gc.AddVariable(function.Name, variable);
+                }
+                foreach (var paramName in function.HeaderNode.ParamNames)
+                    gc.MarkAsInputParameter(function.Name, paramName);
             }
             return gc;
         }

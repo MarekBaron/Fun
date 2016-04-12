@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IronyFortran.GeneratorNodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,35 @@ namespace IronyFortran
 {
     public class GenerationContext
     {
-        private readonly Dictionary<string, HashSet<string>> _parameterNames = new Dictionary<string, HashSet<string>>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, Dictionary<string, Variable>> _variables = new Dictionary<string, Dictionary<string, Variable>>(StringComparer.InvariantCultureIgnoreCase);
 
-        public void AddInputParameter(string aFunctionName, string aParameterName)
+        public void AddVariable(string aFunctionName, Variable aVariable)
         {
-            HashSet<string> hs = null;
-            if(!_parameterNames.TryGetValue(aFunctionName, out hs))
+            Dictionary<string, Variable> functionVariables = null;
+            if(!_variables.TryGetValue(aFunctionName, out functionVariables))
             {
-                hs = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-                _parameterNames.Add(aFunctionName, hs);
+                functionVariables = new Dictionary<string, Variable>(StringComparer.InvariantCultureIgnoreCase);
+                _variables.Add(aFunctionName, functionVariables);               
             }
+            functionVariables.Add(aVariable.Name, aVariable);
         }
 
-        public bool IsInputParameter(string aFunctionName, string aParameterName)
+        public bool IsInputParameter(string aParameterName)
         {
-            return _parameterNames[aFunctionName].Contains(aParameterName);
+            return GetVariable(aParameterName).IsFunctionParameter;
         }
+
+        public Variable GetVariable(string aParameterName, string aFunctionName = null)
+        {
+            var functionName = aFunctionName != null ? aFunctionName : CurrentFunctionName;
+            return _variables[functionName][aParameterName];
+        }
+        
+        public void MarkAsInputParameter(string aFunctionName, string aParameterName)
+        {            
+            GetVariable(aParameterName, aFunctionName).IsFunctionParameter = true;
+        }
+
+        public string CurrentFunctionName { get; set; }
     }
 }

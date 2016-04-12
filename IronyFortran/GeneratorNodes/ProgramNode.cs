@@ -10,11 +10,12 @@ namespace IronyFortran.GeneratorNodes
 {
     public class ProgramNode : BaseNode
     {
-        public override void Generate(int anIndent, StringBuilder aSB)
+        public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
             foreach(var function in Functions)
             {
-                function.Generate(anIndent, aSB);
+                aContext.CurrentFunctionName = function.Name;
+                function.Generate(aContext, anIndent, aSB);
                 aSB.AppendLine();
             }
         }
