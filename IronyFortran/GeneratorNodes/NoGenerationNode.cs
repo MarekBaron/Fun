@@ -17,7 +17,7 @@ namespace IronyFortran.GeneratorNodes
 
         public ParseTreeNode ParseTreeNode { get; private set; }
 
-        public override void Init(AstContext context, ParseTreeNode treeNode)
+        protected override void InitInternal(AstContext context, ParseTreeNode treeNode)
         {
             ParseTreeNode = treeNode;
         }

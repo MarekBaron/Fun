@@ -16,9 +16,8 @@ namespace IronyFortran.GeneratorNodes
                 stmnt.Generate(aContext, anIndent, aSB);
         }
 
-        public override void Init(AstContext context, ParseTreeNode treeNode)
-        {
-            base.Init(context, treeNode);
+        protected override void InitInternal(AstContext context, ParseTreeNode treeNode)
+        {           
             var nodes = treeNode.GetMappedChildNodes();
             _statements = nodes
                 .Select(n => n.AstNode)

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Irony.Interpreter.Ast;
+using Irony.Ast;
+using Irony.Parsing;
+using System.Collections;
 
 namespace IronyFortran.GeneratorNodes
-{
-    //todo zrezygnować z dziedziczenia z astnode
-    public abstract class BaseNode : AstNode
+{    
+    public abstract class BaseNode : IAstNodeInit, IBrowsableAstNode
     {
         public abstract void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB);
 
@@ -46,6 +48,25 @@ namespace IronyFortran.GeneratorNodes
             return result;
         }
 
+        public void Init(AstContext context, ParseTreeNode parseNode)
+        {
+            Span = parseNode.Span;
+            _childNodes = parseNode.GetMappedChildNodes()
+                .Select(n => n.AstNode)
+                .OfType<BaseNode>()
+                .ToList();
+            foreach (var child in _childNodes)
+                child.Parent = this;
+            InitInternal(context, parseNode);
+        }
+
+        protected abstract void InitInternal(AstContext context, ParseTreeNode parseNode);
+
+        public IEnumerable GetChildNodes()
+        {
+            return _childNodes;
+        }
+
         private static Dictionary<string, string> _typeMapping = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
             {"INTEGER", "int" },
@@ -58,5 +79,17 @@ namespace IronyFortran.GeneratorNodes
             {"string", "String.Empty" },
             {"bool", "false" }
         };
+
+        public int Position
+        {
+            get
+            {
+                return Span.Location.Position;
+            }
+        }
+
+        public SourceSpan Span { get; private set; }
+        public BaseNode Parent { get; set; }
+        private List<BaseNode> _childNodes;
     }
 }
