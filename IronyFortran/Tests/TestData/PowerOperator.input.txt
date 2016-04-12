@@ -1,0 +1,10 @@
+Character(256) Function PART06_Druckdifferenz(MpW_H,MpW_K,dpW_H,dpW_K);
+REAL MpW_H,MpW_K,dpW_H,dpW_K,Kv,x,RohW;
+RohW=1000;
+Kv=1.1547;
+x=MpW_K;
+x=dpW_K;
+dpW_H=(MpW_H/RohW/Kv)**2*RohW/1000*100;
+PART06_Druckdifferenz='';
+if(dpW_H==0)PART06_Druckdifferenz='Druckverlust Ronda muss > 0 sein';
+End Function PART06_Druckdifferenz;

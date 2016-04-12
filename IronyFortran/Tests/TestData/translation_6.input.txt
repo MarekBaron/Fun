@@ -1,0 +1,6 @@
+LOGICAL FUNCTION CheckIndexes(iTgaNr, sIDXs);Prueft ob alle Indizien in TGA-Nummer sind gueltig;
+INTEGER iTgaNr(1:18);
+INTEGER iCounter, iIdx;
+CHARACTER(6) sIDXs(1:18);
+iIdx=VDIERSTER(sIDXs(iCounter - 2), iTgaNr(iCounter - 2), sIDXs(iCounter));
+END FUNCTION CheckIndexes;

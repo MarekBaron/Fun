@@ -1,0 +1,11 @@
+LOGICAL FUNCTION SplitTgaNr(TgaNrSource, iTgaNr, sTgaNr);Zersplittet ursprungliche TGA-Nummer, ermittelt einzelne Indizien und verifiziert sie danach;
+CHARACTER(58) TgaNrSource;
+INTEGER iTgaNr(1:18);
+CHARACTER(5) sTgaNr(1:18);
+sTgaNr(16)=VDICSTRING(TgaNrSource, 0, 46, 50);Index 700;
+IF (VDICSTRING(sTgaNr(16), 0, 1, 1)=='?') THEN;
+iTgaNr(16)=VDIERSTER('700');
+ELSE;
+iTgaNr(16)=VDIISTRING(sTgaNr(16), 0, 0, 0);
+ENDIF;
+END FUNCTION SplitTgaNr;
