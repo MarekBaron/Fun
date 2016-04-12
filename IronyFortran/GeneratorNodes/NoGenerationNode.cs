@@ -10,7 +10,7 @@ namespace IronyFortran.GeneratorNodes
 {
     public class NoGenerationNode : BaseNode
     {
-        public override void Generate(int anIndent, StringBuilder aSB)
+        public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
             throw new InvalidOperationException("Wezeł nie przeznaczony do generacji");
         }
