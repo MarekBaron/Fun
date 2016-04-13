@@ -37,6 +37,13 @@ int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
    D5F = (string)(@"?????");
    D5N = (string)(@"00000");
    MASK.SetRange(1, 5, @"x-x----------", @"--------xx---", @"--------xx---", @"--------xx---", @"-----------xx");
+   TGA = (string)(VDISTRING(@"&|&", XTGA, @"??????????????????????????????????????????????????????????"));
+   S16 = (string)(VDICSTRING(TGA, 0, 7, 9));
+   S40 = (string)(VDICSTRING(TGA, 0, 28, 30));
+   S45 = (string)(VDICSTRING(TGA, 0, 31, 33));
+   S70 = (string)(VDICSTRING(TGA, 0, 46, 50));
+   S76 = (string)(VDICSTRING(TGA, 0, 51, 53));
+   S71 = (string)(VDICSTRING(TGA, 0, 54, 58));
    return TGA_810;
 }
 
