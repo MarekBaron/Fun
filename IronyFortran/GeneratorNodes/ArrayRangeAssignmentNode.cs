@@ -16,7 +16,7 @@ namespace IronyFortran.GeneratorNodes
         /// <summary/>        
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            aSB.AppendFormat("{0}{1}.SetRange({2}, {3}, ", Indent(anIndent), VariableName, RangeFrom, RangeTo);
+            aSB.AppendFormat("{0}{1}.SetRange({2}, {3}, ", Indent(anIndent), VariableName.Value, RangeFrom, RangeTo);
             ExpressionList.Generate(aContext, anIndent, aSB);
             aSB.AppendLine(");");
         }
@@ -24,13 +24,13 @@ namespace IronyFortran.GeneratorNodes
         /// <summary/>
         protected override void InitInternal(AstContext context, ParseTreeNode parseNode)
         {
-            VariableName = parseNode.ChildNodes[0].Token.ValueString.ToUpper();
+            VariableName = (IdentifierValueNode)parseNode.ChildNodes[0].AstNode;
             RangeFrom = parseNode.ChildNodes[1].Token.ValueString;
             RangeTo = parseNode.ChildNodes[2].Token.ValueString;
             ExpressionList = (ExpressionListNode)parseNode.ChildNodes[3].AstNode;
         }
 
-        public string VariableName { get; private set; }
+        public IdentifierValueNode VariableName { get; private set; }
         public string RangeFrom { get; private set; }
         public string RangeTo { get; private set; }
         public ExpressionListNode ExpressionList { get; private set; }

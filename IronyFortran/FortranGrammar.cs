@@ -1,5 +1,4 @@
-﻿using Irony.Interpreter;
-using Irony.Parsing;
+﻿using Irony.Parsing;
 using IronyFortran.GeneratorNodes;
 using System;
 using System.Collections.Generic;
@@ -10,52 +9,58 @@ using System.Threading.Tasks;
 namespace IronyFortran
 {
     [Language("VDIFortran")]
-    public class FortranGrammar : InterpretedLanguageGrammar //todo: przejść na Grammar (odetniemy się od Irony.Interpreter.dll) - patrz https://irony.codeplex.com/discussions/361018
+    public class FortranGrammar : Grammar
     {
         public FortranGrammar() : base(caseSensitive: false)
-        {            
+        {
             //terminals
-            var identifier = new IdentifierTerminal("identifier");            
+            var identifier = new IdentifierTerminal("identifier");
+            identifier.AstConfig.NodeType = typeof(IdentifierValueNode);
             var number = new NumberLiteral("number");
+            number.AstConfig.NodeType = typeof(LiteralValueNode);
             var intNumber = new NumberLiteral("intNumber", NumberOptions.IntOnly);
+            intNumber.AstConfig.NodeType = typeof(LiteralValueNode);
             var stringValue = new StringLiteral("stringValue", "'");
+            stringValue.AstConfig.NodeType = typeof(StringLiteralValueNode);
 
             //nonterminals            
             var builtinType = new NonTerminal("builtinType", typeof(NoGenerationNode));
-            var stringType = new NonTerminal("stringType", typeof(NoGenerationNode));            
+            var stringType = new NonTerminal("stringType", typeof(NoGenerationNode));
             var paramList = new NonTerminal("paramList", typeof(NoGenerationNode));
             var functionHeader = new NonTerminal("functionHeader", typeof(FunctionHeaderNode));
             var functionFooter = new NonTerminal("functionFooter", typeof(NoGenerationNode));
             var variableDec = new NonTerminal("variableDec", typeof(VariableDecNode));
             var variableDecList = new NonTerminal("variableDecList", typeof(NoGenerationNode));
             var variableDecListElem = new NonTerminal("variableDecListElem", typeof(NoGenerationNode));
-            var expression = new NonTerminal("expression", typeof(ExpressionNode));
+            var expression = new NonTerminal("expression", typeof(NoGenerationNode));
             var expressionList = new NonTerminal("expressionList", typeof(ExpressionListNode));
             var assignment = new NonTerminal("assignment", typeof(AssignmentNode));
             var arrayRangeAssignment = new NonTerminal("arrayRangeAssignment", typeof(ArrayRangeAssignmentNode));
+            var functionCall = new NonTerminal("functionCall", typeof(FunctionCallNode));
             var statement = new NonTerminal("statement", typeof(NoGenerationNode));
             var statementList = new NonTerminal("statementList", typeof(StatementListNode));
-            var function = new NonTerminal("function", typeof(FunctionNode));           
+            var function = new NonTerminal("function", typeof(FunctionNode));
             var program = new NonTerminal("program", typeof(ProgramNode));
             var value = new NonTerminal("value", typeof(NoGenerationNode));
-            
+
             this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)");
-            this.MarkTransient(builtinType, statement);
+            this.MarkTransient(builtinType, statement, value, expression);
 
             //rules //NIE SKLEJAć STRINGÓW!!! np. ")" + ";"
             stringType.Rule = ToTerm("CHARACTER") + "(" + intNumber + ")";
             builtinType.Rule = ToTerm("INTEGER") | "CHARACTER" | stringType | "LOGICAL";
             paramList.Rule = MakeStarRule(paramList, ToTerm(","), identifier);
             functionHeader.Rule = builtinType + ToTerm("FUNCTION") + identifier + "(" + paramList + ")" + ";";
-            functionFooter.Rule = ToTerm("END") + ToTerm("FUNCTION") + identifier +";";
+            functionFooter.Rule = ToTerm("END") + ToTerm("FUNCTION") + identifier + ";";
 
-            variableDecListElem.Rule = identifier | identifier + "(" + intNumber + ")";            
+            variableDecListElem.Rule = identifier | identifier + "(" + intNumber + ")";
             variableDecList.Rule = MakeStarRule(variableDecList, ToTerm(","), variableDecListElem);
             variableDec.Rule = builtinType + variableDecList + ";";
 
+            functionCall.Rule = identifier + "(" + expressionList + ")";
             value.Rule = stringValue | intNumber | number | identifier;
             expressionList.Rule = MakePlusRule(expressionList, ToTerm(","), expression);
-            expression.Rule = value;
+            expression.Rule = value | functionCall;
             assignment.Rule = identifier + "=" + expression + ";";
             arrayRangeAssignment.Rule = identifier + "(" + intNumber + ":" + intNumber + ")" + "=" + "(/" + expressionList + "/)" + ";"; 
 
