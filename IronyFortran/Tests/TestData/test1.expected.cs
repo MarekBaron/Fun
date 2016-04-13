@@ -30,6 +30,12 @@ int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
    bool B2 = false;
    bool L40 = false;
    bool L45 = false;
+   TEMP = (string)(@"ala ma ""kota""");
+   GNR = (string)(@"PH0");
+   D3F = (string)(@"???");
+   D3N = (string)(@"000");
+   D5F = (string)(@"?????");
+   D5N = (string)(@"00000");
    return TGA_810;
 }
 
