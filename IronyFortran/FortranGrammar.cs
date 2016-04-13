@@ -30,7 +30,7 @@ namespace IronyFortran
             var variableDecList = new NonTerminal("variableDecList", typeof(NoGenerationNode));
             var variableDecListElem = new NonTerminal("variableDecListElem", typeof(NoGenerationNode));
             var expression = new NonTerminal("expression", typeof(ExpressionNode));
-            var expressionList = new NonTerminal("expressionList", typeof(NoGenerationNode));
+            var expressionList = new NonTerminal("expressionList", typeof(ExpressionListNode));
             var assignment = new NonTerminal("assignment", typeof(AssignmentNode));
             var arrayRangeAssignment = new NonTerminal("arrayRangeAssignment", typeof(ArrayRangeAssignmentNode));
             var statement = new NonTerminal("statement", typeof(NoGenerationNode));
