@@ -22,20 +22,30 @@ namespace IronyFortran
             functionVariables.Add(aVariable.Name, aVariable);
         }
 
-        public bool IsInputParameter(string aParameterName)
+        public bool IsInputParameter(string aVariableName)
         {
-            return GetVariable(aParameterName).IsFunctionParameter;
+            return GetVariable(aVariableName).IsFunctionParameter;
         }
 
-        public Variable GetVariable(string aParameterName, string aFunctionName = null)
+        public Variable GetVariable(string aVariableName, string aFunctionName = null)
         {
             var functionName = aFunctionName != null ? aFunctionName : CurrentFunctionName;
-            return _variables[functionName][aParameterName];
+            return _variables[functionName][aVariableName];
         }
         
         public void MarkAsInputParameter(string aFunctionName, string aParameterName)
         {            
             GetVariable(aParameterName, aFunctionName).IsFunctionParameter = true;
+        }
+
+        /// <summary>
+        /// Zwraca typ zmiennej w kontekście aktualnej funkcji
+        /// </summary>
+        /// <param name="aVariableName"></param>
+        /// <returns></returns>
+        public string VariableType(string aVariableName)
+        {
+            return GetVariable(aVariableName).Type;
         }
 
         public string CurrentFunctionName { get; set; }

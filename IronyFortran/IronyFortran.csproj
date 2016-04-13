@@ -53,7 +53,9 @@
     <Compile Include="FortranGrammar.cs" />
     <Compile Include="FunctionTranslator.cs" />
     <Compile Include="GenerationContext.cs" />
+    <Compile Include="GeneratorNodes\AssignmentNode.cs" />
     <Compile Include="GeneratorNodes\BaseNode.cs" />
+    <Compile Include="GeneratorNodes\ExpressionNode.cs" />
     <Compile Include="GeneratorNodes\FunctionHeaderNode.cs" />
     <Compile Include="GeneratorNodes\FunctionNode.cs" />
     <Compile Include="GeneratorNodes\NoGenerationNode.cs" />
