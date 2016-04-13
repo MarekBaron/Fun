@@ -36,6 +36,7 @@ int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
    D3N = (string)(@"000");
    D5F = (string)(@"?????");
    D5N = (string)(@"00000");
+   MASK.SetRange(1, 5, @"x-x----------", @"--------xx---", @"--------xx---", @"--------xx---", @"-----------xx");
    return TGA_810;
 }
 

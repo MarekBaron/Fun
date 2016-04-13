@@ -22,7 +22,7 @@ namespace IronyFortran
 
             //nonterminals            
             var builtinType = new NonTerminal("builtinType", typeof(NoGenerationNode));
-            var stringType = new NonTerminal("stringType", typeof(NoGenerationNode));
+            var stringType = new NonTerminal("stringType", typeof(NoGenerationNode));            
             var paramList = new NonTerminal("paramList", typeof(NoGenerationNode));
             var functionHeader = new NonTerminal("functionHeader", typeof(FunctionHeaderNode));
             var functionFooter = new NonTerminal("functionFooter", typeof(NoGenerationNode));
@@ -30,17 +30,19 @@ namespace IronyFortran
             var variableDecList = new NonTerminal("variableDecList", typeof(NoGenerationNode));
             var variableDecListElem = new NonTerminal("variableDecListElem", typeof(NoGenerationNode));
             var expression = new NonTerminal("expression", typeof(ExpressionNode));
+            var expressionList = new NonTerminal("expressionList", typeof(NoGenerationNode));
             var assignment = new NonTerminal("assignment", typeof(AssignmentNode));
+            var arrayRangeAssignment = new NonTerminal("arrayRangeAssignment", typeof(ArrayRangeAssignmentNode));
             var statement = new NonTerminal("statement", typeof(NoGenerationNode));
             var statementList = new NonTerminal("statementList", typeof(StatementListNode));
             var function = new NonTerminal("function", typeof(FunctionNode));           
             var program = new NonTerminal("program", typeof(ProgramNode));
             var value = new NonTerminal("value", typeof(NoGenerationNode));
-
-            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=");
+            
+            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)");
             this.MarkTransient(builtinType, statement);
 
-            //rules
+            //rules //NIE SKLEJAć STRINGÓW!!! np. ")" + ";"
             stringType.Rule = ToTerm("CHARACTER") + "(" + intNumber + ")";
             builtinType.Rule = ToTerm("INTEGER") | "CHARACTER" | stringType | "LOGICAL";
             paramList.Rule = MakeStarRule(paramList, ToTerm(","), identifier);
@@ -52,10 +54,12 @@ namespace IronyFortran
             variableDec.Rule = builtinType + variableDecList + ";";
 
             value.Rule = stringValue | intNumber | number | identifier;
+            expressionList.Rule = MakePlusRule(expressionList, ToTerm(","), expression);
             expression.Rule = value;
             assignment.Rule = identifier + "=" + expression + ";";
+            arrayRangeAssignment.Rule = identifier + "(" + intNumber + ":" + intNumber + ")" + "=" + "(/" + expressionList + "/)" + ";"; 
 
-            statement.Rule = variableDec | assignment;
+            statement.Rule = variableDec | assignment | arrayRangeAssignment;
             statementList.Rule = MakeStarRule(statementList, statement);
 
             function.Rule = functionHeader + statementList + functionFooter;
