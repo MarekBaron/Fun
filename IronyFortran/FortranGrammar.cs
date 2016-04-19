@@ -32,6 +32,8 @@ namespace IronyFortran
             var variableDec = new NonTerminal("variableDec", typeof(VariableDecNode));
             var variableDecList = new NonTerminal("variableDecList", typeof(NoGenerationNode));
             var variableDecListElem = new NonTerminal("variableDecListElem", typeof(NoGenerationNode));
+            var binOp = new NonTerminal("binOp", typeof(NoGenerationNode));
+            var binExpr = new NonTerminal("binExp", typeof(BinExprNode));
             var expression = new NonTerminal("expression", typeof(NoGenerationNode));
             var expressionList = new NonTerminal("expressionList", typeof(ExpressionListNode));
             var assignment = new NonTerminal("assignment", typeof(AssignmentNode));
@@ -43,15 +45,14 @@ namespace IronyFortran
             var program = new NonTerminal("program", typeof(ProgramNode));
             var value = new NonTerminal("value", typeof(NoGenerationNode));
 
-            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)");
-            this.MarkTransient(builtinType, statement, value, expression);
+            
 
             //rules //NIE SKLEJAć STRINGÓW!!! np. ")" + ";"
             stringType.Rule = ToTerm("CHARACTER") + "(" + intNumber + ")";
             builtinType.Rule = ToTerm("INTEGER") | "CHARACTER" | stringType | "LOGICAL";
             paramList.Rule = MakeStarRule(paramList, ToTerm(","), identifier);
             functionHeader.Rule = builtinType + ToTerm("FUNCTION") + identifier + "(" + paramList + ")" + ";";
-            functionFooter.Rule = ToTerm("END") + ToTerm("FUNCTION") + identifier + ";";
+            functionFooter.Rule = ToTerm("END") + ToTerm("FUNCTION") + identifier + ";";           
 
             variableDecListElem.Rule = identifier | identifier + "(" + intNumber + ")";
             variableDecList.Rule = MakeStarRule(variableDecList, ToTerm(","), variableDecListElem);
@@ -59,8 +60,10 @@ namespace IronyFortran
 
             functionCall.Rule = identifier + "(" + expressionList + ")";
             value.Rule = stringValue | intNumber | number | identifier;
+            binOp.Rule = ToTerm("+") | "-" | "*" | "/" | "**" | "==" | "<" | "<=" | ">" | ">=" | ".and." | ".or." ;
+            binExpr.Rule = expression + binOp + expression;
             expressionList.Rule = MakePlusRule(expressionList, ToTerm(","), expression);
-            expression.Rule = value | functionCall;
+            expression.Rule = value | functionCall | binExpr;
             assignment.Rule = identifier + "=" + expression + ";";
             arrayRangeAssignment.Rule = identifier + "(" + intNumber + ":" + intNumber + ")" + "=" + "(/" + expressionList + "/)" + ";"; 
 
@@ -70,6 +73,16 @@ namespace IronyFortran
             function.Rule = functionHeader + statementList + functionFooter;
             program.Rule = MakePlusRule(program, function);
             this.Root = program;
+
+            RegisterOperators(10, "?");
+            RegisterOperators(15, ".and.", ".or.");
+            RegisterOperators(20, "==", "<", "<=", ">", ">=");
+            RegisterOperators(30, "+", "-");
+            RegisterOperators(40, "*", "/");
+            RegisterOperators(50, Associativity.Right, "**");
+
+            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)");
+            this.MarkTransient(builtinType, statement, value, expression, binOp);
 
             this.LanguageFlags |= LanguageFlags.CreateAst;
 

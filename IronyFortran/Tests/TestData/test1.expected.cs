@@ -44,6 +44,10 @@ int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
    S70 = (string)(VDICSTRING(TGA, 0, 46, 50));
    S76 = (string)(VDICSTRING(TGA, 0, 51, 53));
    S71 = (string)(VDICSTRING(TGA, 0, 54, 58));
+   L40 = (bool)(S40 == D3F || S40 == D3N);
+   L45 = (bool)(S45 == D3F || S45 == D3N);
+   L70 = (bool)(S70 == D5F || S70 == D5N);
+   L71 = (bool)(S71 == D5F || S71 == D5N);
    return TGA_810;
 }
 

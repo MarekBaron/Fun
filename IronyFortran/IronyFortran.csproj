@@ -53,6 +53,7 @@
     <Compile Include="GeneratorNodes\ArrayRangeAssignmentNode.cs" />
     <Compile Include="GeneratorNodes\AssignmentNode.cs" />
     <Compile Include="GeneratorNodes\BaseNode.cs" />
+    <Compile Include="GeneratorNodes\BinExprNode.cs" />
     <Compile Include="GeneratorNodes\ExpressionListNode.cs" />
     <Compile Include="GeneratorNodes\FunctionCallNode.cs" />
     <Compile Include="GeneratorNodes\FunctionHeaderNode.cs" />
