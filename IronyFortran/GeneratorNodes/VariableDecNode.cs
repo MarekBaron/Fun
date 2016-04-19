@@ -12,12 +12,19 @@ namespace IronyFortran.GeneratorNodes
     {
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            foreach (var variable in Variables.Where(v => !aContext.IsInputParameter(v.Name)))
+            var variablesToGenerate = _variables.Where(v => !aContext.IsInputParameter(v.Name)).ToList();
+            if (!variablesToGenerate.Any())
+                return;
+            var lastVariable = variablesToGenerate.Last();
+
+            foreach (var variable in variablesToGenerate)
             {
-                aSB.Append(Indent(anIndent));
+                if(variable != variablesToGenerate[0])
+                    aSB.Append(Indent(anIndent));
                 aSB.Append(variable.IsArray ? "VDIArray<" + variable.Type + ">" : variable.Type);
-                aSB.AppendFormat(" {0} = {1};", variable.Name, variable.IsArray ? "new VDIArray<" + variable.Type + ">()" : GetDefaultValue(variable.Type));
-                aSB.AppendLine();
+                aSB.AppendFormat(" {0} = {1}", variable.Name, variable.IsArray ? "new VDIArray<" + variable.Type + ">()" : GetDefaultValue(variable.Type));
+                if(variable != lastVariable)
+                    aSB.AppendLine(";");
             }
         }
 

@@ -13,7 +13,11 @@ namespace IronyFortran.GeneratorNodes
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
             foreach (var stmnt in _statements)
+            {
+                aSB.Append(Indent(anIndent));
                 stmnt.Generate(aContext, anIndent, aSB);
+                aSB.AppendLine(";");
+            }
         }
 
         protected override void InitInternal(AstContext context, ParseTreeNode treeNode)
@@ -28,6 +32,8 @@ namespace IronyFortran.GeneratorNodes
         private List<StatementNode> _statements;
 
         public IEnumerable<StatementNode> Statements { get { return _statements; } }
+        
+        public bool IsSingle { get { return _statements.Count == 1; } }
 
     }
 }

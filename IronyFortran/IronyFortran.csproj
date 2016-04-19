@@ -59,6 +59,8 @@
     <Compile Include="GeneratorNodes\FunctionHeaderNode.cs" />
     <Compile Include="GeneratorNodes\FunctionNode.cs" />
     <Compile Include="GeneratorNodes\IdentifierValueNode.cs" />
+    <Compile Include="GeneratorNodes\ifOneLineStatementNode.cs" />
+    <Compile Include="GeneratorNodes\IfStatementNode.cs" />
     <Compile Include="GeneratorNodes\LiteralValueNode.cs" />
     <Compile Include="GeneratorNodes\NoGenerationNode.cs" />
     <Compile Include="GeneratorNodes\ProgramNode.cs" />

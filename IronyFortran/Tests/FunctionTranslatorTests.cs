@@ -13,14 +13,14 @@ namespace IronyFortran.Tests
     public class FunctionTranslatorTests
     {
         [TestCase("test1")]
+        //[TestCase("ifelseelseif")]
         public void TestTranslation(string aFilename)
         {
             var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Tests\TestData"));
             var inputFilename = Path.Combine(path, aFilename) + ".input.txt";            
             var expectedFilename = Path.Combine(path, aFilename) + ".expected.cs";
             var outputFilename = Path.Combine(path, aFilename) + ".output.cs";
-            FileAssert.Exists(inputFilename);
-            FileAssert.Exists(expectedFilename);
+            FileAssert.Exists(inputFilename);            
 
             var trns = new FunctionTranslator();
             string errors;

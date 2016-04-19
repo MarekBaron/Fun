@@ -16,9 +16,9 @@ namespace IronyFortran.GeneratorNodes
         /// <summary/>        
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            aSB.AppendFormat("{0}{1}.SetRange({2}, {3}, ", Indent(anIndent), VariableName.Value, RangeFrom, RangeTo);
+            aSB.AppendFormat("{0}.SetRange({1}, {2}, ", VariableName.Value, RangeFrom, RangeTo);
             ExpressionList.Generate(aContext, anIndent, aSB);
-            aSB.AppendLine(");");
+            aSB.Append(")");
         }
 
         /// <summary/>

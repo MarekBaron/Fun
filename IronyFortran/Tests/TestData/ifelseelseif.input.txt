@@ -1,0 +1,38 @@
+INTEGER FUNCTION TGA_810(XTGA,ARRAY_810);
+CHARACTER (256) XTGA,ARRAY_810(2);
+INTEGER a,b,c,d,e,f,g,h;
+
+IF(a)a=1;
+
+IF(b)then;
+a=2;
+endif;
+
+if(c)then;
+a=3;
+else;
+a=4;
+endif;
+
+if(d)then;
+a = 1;
+elseif(e)then;
+a = 2;
+elseif(f)then;
+a = 3;
+else;
+a = 4;
+endif;
+
+if(g)then;
+a = 1;
+elseif(h)then;
+a = 11;
+endif;
+
+if(g)then;
+a = 1;
+elseif(h)a = 11;
+endif;
+
+END FUNCTION TGA_810;

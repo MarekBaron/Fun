@@ -48,6 +48,20 @@ int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
    L45 = (bool)(S45 == D3F || S45 == D3N);
    L70 = (bool)(S70 == D5F || S70 == D5N);
    L71 = (bool)(S71 == D5F || S71 == D5N);
+   if(L40) S40 = (string)(@"0");
+   if(L45) S45 = (string)(@"0");
+   if(L70) S70 = (string)(@"1");
+   if(L71) S71 = (string)(@"0");
+   I40 = (int)(VDIISTRING(S40, 0, 0, 0));
+   I45 = (int)(VDIISTRING(S45, 0, 0, 0));
+   I70 = (int)(VDIISTRING(S70, 0, 0, 0));
+   I71 = (int)(VDIISTRING(S71, 0, 0, 0));
+   if(ARRAY_810(1))
+   {
+      I40 = (int)( Math.Pow(1, 0));
+      I45 = (int)(0);
+   }
+;
    return TGA_810;
 }
 
