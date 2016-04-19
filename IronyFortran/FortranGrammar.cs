@@ -33,7 +33,14 @@ namespace IronyFortran
             var variableDecList = new NonTerminal("variableDecList", typeof(NoGenerationNode));
             var variableDecListElem = new NonTerminal("variableDecListElem", typeof(NoGenerationNode));
             var binOp = new NonTerminal("binOp", typeof(NoGenerationNode));
-            var binExpr = new NonTerminal("binExp", typeof(BinExprNode));
+            var binExpr = new NonTerminal("binExp", typeof(BinExprNode));            
+            var ifOneLineStatement = new NonTerminal("ifOneLineStatement", typeof(ifOneLineStatementNode));
+            var ifStatement = new NonTerminal("ifStatement", typeof(IfStatementNode));
+            var elseIfClause = new NonTerminal("elseIfClause", typeof(NoGenerationNode));
+            var elseIfOneLineClause = new NonTerminal("elseIfOneLineClause", typeof(NoGenerationNode));
+            var elseIfClauseList = new NonTerminal("elseIfClauseList", typeof(NoGenerationNode));
+            var elseIfClauseListElem = new NonTerminal("elseIfClauseListElem", typeof(NoGenerationNode));
+            var elseClause_opt = new NonTerminal("elseStatement_opt", typeof(NoGenerationNode));            
             var expression = new NonTerminal("expression", typeof(NoGenerationNode));
             var expressionList = new NonTerminal("expressionList", typeof(ExpressionListNode));
             var assignment = new NonTerminal("assignment", typeof(AssignmentNode));
@@ -44,8 +51,6 @@ namespace IronyFortran
             var function = new NonTerminal("function", typeof(FunctionNode));
             var program = new NonTerminal("program", typeof(ProgramNode));
             var value = new NonTerminal("value", typeof(NoGenerationNode));
-
-            
 
             //rules //NIE SKLEJAć STRINGÓW!!! np. ")" + ";"
             stringType.Rule = ToTerm("CHARACTER") + "(" + intNumber + ")";
@@ -62,12 +67,21 @@ namespace IronyFortran
             value.Rule = stringValue | intNumber | number | identifier;
             binOp.Rule = ToTerm("+") | "-" | "*" | "/" | "**" | "==" | "<" | "<=" | ">" | ">=" | ".and." | ".or." ;
             binExpr.Rule = expression + binOp + expression;
+            
+            ifStatement.Rule = ToTerm("if") + "(" + expression + ")" + "then" + ";" + statementList + elseIfClauseList + elseClause_opt + "endif" + ";";
+            ifOneLineStatement.Rule = ToTerm("if") + "(" + expression + ")" + statement;
+            elseClause_opt.Rule = Empty | ToTerm("else") + ";" + statementList;
+            elseIfClause.Rule = ToTerm("elseif") + "(" + expression + ")" + "then" + ";" + statementList;
+            elseIfOneLineClause.Rule = ToTerm("elseif") + "(" + expression + ")" + statement;
+            elseIfClauseListElem.Rule = elseIfClause | elseIfOneLineClause;
+            elseIfClauseList.Rule = MakeStarRule(elseIfClauseList, elseIfClauseListElem);
+
             expressionList.Rule = MakePlusRule(expressionList, ToTerm(","), expression);
             expression.Rule = value | functionCall | binExpr;
             assignment.Rule = identifier + "=" + expression + ";";
             arrayRangeAssignment.Rule = identifier + "(" + intNumber + ":" + intNumber + ")" + "=" + "(/" + expressionList + "/)" + ";"; 
 
-            statement.Rule = variableDec | assignment | arrayRangeAssignment;
+            statement.Rule = variableDec | assignment | arrayRangeAssignment | ifOneLineStatement | ifStatement;
             statementList.Rule = MakeStarRule(statementList, statement);
 
             function.Rule = functionHeader + statementList + functionFooter;
@@ -81,8 +95,9 @@ namespace IronyFortran
             RegisterOperators(40, "*", "/");
             RegisterOperators(50, Associativity.Right, "**");
 
-            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)");
-            this.MarkTransient(builtinType, statement, value, expression, binOp);
+            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)", "if", "then", "else", "elseif", "endif");
+            this.MarkTransient(builtinType, statement, value, expression, binOp, elseIfClauseListElem);
+            this.MarkReservedWords("if", "then", "else", "elseif");
 
             this.LanguageFlags |= LanguageFlags.CreateAst;
 

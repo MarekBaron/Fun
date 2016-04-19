@@ -15,9 +15,9 @@ namespace IronyFortran.GeneratorNodes
 
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            aSB.AppendFormat("{0}{1} = ({2})(", Indent(anIndent), VariableName.Value, aContext.VariableType(VariableName.Value));
+            aSB.AppendFormat("{0} = ({1})(", VariableName.Value, aContext.VariableType(VariableName.Value));
             Value.Generate(aContext, anIndent, aSB);
-            aSB.AppendLine(");");
+            aSB.Append(")");
         }
 
         protected override void InitInternal(AstContext context, ParseTreeNode parseNode)

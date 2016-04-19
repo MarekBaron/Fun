@@ -47,16 +47,16 @@ namespace IronyFortran.GeneratorNodes
             return result;
         }
 
-        public void Init(AstContext context, ParseTreeNode parseNode)
+        public void Init(AstContext aContext, ParseTreeNode aParseNode)
         {
-            Span = parseNode.Span;
-            _childNodes = parseNode.GetMappedChildNodes()
+            Span = aParseNode.Span;
+            _childNodes = aParseNode.GetMappedChildNodes()
                 .Select(n => n.AstNode)
                 .OfType<BaseNode>()
                 .ToList();
             foreach (var child in _childNodes)
                 child.Parent = this;
-            InitInternal(context, parseNode);
+            InitInternal(aContext, aParseNode);
         }
 
         protected abstract void InitInternal(AstContext context, ParseTreeNode parseNode);
