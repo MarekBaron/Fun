@@ -42,7 +42,8 @@ namespace IronyFortran
         {            
             var gc = new GenerationContext();
             foreach(var function in aProgramNode.Functions)
-            {                
+            {
+                gc.AddVariable(function.Name, new Variable(function.HeaderNode.ReturnType, function.Name));//nazwa funkcji może w jej ciele występować jak zmienna
                 foreach(var varDecNode in function.StatementList.Statements.OfType<VariableDecNode>())
                 {
                     foreach (var variable in varDecNode.Variables)

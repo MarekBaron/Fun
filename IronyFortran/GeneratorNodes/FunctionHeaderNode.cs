@@ -15,7 +15,7 @@ namespace IronyFortran.GeneratorNodes
                 
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            aSB.AppendLine(String.Format("{0}{1} {2}({3})", 
+            aSB.AppendLine(String.Format("{0}public override {1} {2}({3})", 
                 Indent(anIndent), 
                 ReturnType, 
                 Name, 

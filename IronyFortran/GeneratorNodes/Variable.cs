@@ -16,6 +16,14 @@ namespace IronyFortran.GeneratorNodes
             IsArray = aTreeNode.ChildNodes.Count > 1;
             Name = firstChildNode.Token.ValueString.ToUpper();  
         }
+        
+        public Variable(string aType, string aName)
+        {
+            Type = aType;
+            Name = aName;
+            IsArray = false;
+            IsFunctionParameter = false;
+        }
 
         public string Type { get; private set; }
         public string Name { get; private set; }
