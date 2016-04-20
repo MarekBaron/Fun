@@ -27,6 +27,16 @@ namespace IronyFortran
             return GetVariable(aVariableName).IsFunctionParameter;
         }
 
+        public bool IsArray(string aVariableName)
+        {
+            return IsVariable(aVariableName) && GetVariable(aVariableName).IsArray;
+        }
+
+        public bool IsVariable(string aVariableName)
+        {
+            return _variables[CurrentFunctionName].ContainsKey(aVariableName);
+        }
+
         public Variable GetVariable(string aVariableName, string aFunctionName = null)
         {
             var functionName = aFunctionName != null ? aFunctionName : CurrentFunctionName;

@@ -34,11 +34,11 @@ namespace IronyFortran
             var variableDecListElem = new NonTerminal("variableDecListElem", typeof(NoGenerationNode));
             var binOp = new NonTerminal("binOp", typeof(NoGenerationNode));
             var binExpr = new NonTerminal("binExp", typeof(BinExprNode));            
-            var ifOneLineStatement = new NonTerminal("ifOneLineStatement", typeof(ifOneLineStatementNode));
+            var ifOneLineStatement = new NonTerminal("ifOneLineStatement", typeof(IfOneLineStatementNode));
             var ifStatement = new NonTerminal("ifStatement", typeof(IfStatementNode));
-            var elseIfClause = new NonTerminal("elseIfClause", typeof(NoGenerationNode));
-            var elseIfOneLineClause = new NonTerminal("elseIfOneLineClause", typeof(NoGenerationNode));
-            var elseIfClauseList = new NonTerminal("elseIfClauseList", typeof(NoGenerationNode));
+            var elseIfClause = new NonTerminal("elseIfClause", typeof(ElseIfClauseNode));
+            var elseIfOneLineClause = new NonTerminal("elseIfOneLineClause", typeof(ElseIfOneLineClauseNode));
+            var elseIfClauseList = new NonTerminal("elseIfClauseList", typeof(ElseIfClauseListNode));
             var elseIfClauseListElem = new NonTerminal("elseIfClauseListElem", typeof(NoGenerationNode));
             var elseClause_opt = new NonTerminal("elseStatement_opt", typeof(NoGenerationNode));            
             var expression = new NonTerminal("expression", typeof(NoGenerationNode));

@@ -13,7 +13,7 @@ namespace IronyFortran.Tests
     public class FunctionTranslatorTests
     {
         [TestCase("test1")]
-        //[TestCase("ifelseelseif")]
+        [TestCase("ifelseelseif")]
         public void TestTranslation(string aFilename)
         {
             var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Tests\TestData"));

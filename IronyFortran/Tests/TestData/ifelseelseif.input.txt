@@ -1,5 +1,5 @@
 INTEGER FUNCTION TGA_810(XTGA,ARRAY_810);
-CHARACTER (256) XTGA,ARRAY_810(2);
+CHARACTER (256) XTGA,TGA,ARRAY_810(2);
 INTEGER a,b,c,d,e,f,g,h;
 
 IF(a)a=1;
@@ -27,12 +27,12 @@ endif;
 if(g)then;
 a = 1;
 elseif(h)then;
-a = 11;
+a = 12;
 endif;
 
 if(g)then;
 a = 1;
-elseif(h)a = 11;
+elseif(h)a = 13;
 endif;
 
 END FUNCTION TGA_810;

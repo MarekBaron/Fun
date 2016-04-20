@@ -54,12 +54,15 @@
     <Compile Include="GeneratorNodes\AssignmentNode.cs" />
     <Compile Include="GeneratorNodes\BaseNode.cs" />
     <Compile Include="GeneratorNodes\BinExprNode.cs" />
+    <Compile Include="GeneratorNodes\ElseIfClauseListNode.cs" />
+    <Compile Include="GeneratorNodes\ElseIfClauseNode.cs" />
+    <Compile Include="GeneratorNodes\ElseIfOneLineClauseNode.cs" />
     <Compile Include="GeneratorNodes\ExpressionListNode.cs" />
     <Compile Include="GeneratorNodes\FunctionCallNode.cs" />
     <Compile Include="GeneratorNodes\FunctionHeaderNode.cs" />
     <Compile Include="GeneratorNodes\FunctionNode.cs" />
     <Compile Include="GeneratorNodes\IdentifierValueNode.cs" />
-    <Compile Include="GeneratorNodes\ifOneLineStatementNode.cs" />
+    <Compile Include="GeneratorNodes\IfOneLineStatementNode.cs" />
     <Compile Include="GeneratorNodes\IfStatementNode.cs" />
     <Compile Include="GeneratorNodes\LiteralValueNode.cs" />
     <Compile Include="GeneratorNodes\NoGenerationNode.cs" />
