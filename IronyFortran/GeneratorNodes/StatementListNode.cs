@@ -25,13 +25,13 @@ namespace IronyFortran.GeneratorNodes
             var nodes = treeNode.GetMappedChildNodes();
             _statements = nodes
                 .Select(n => n.AstNode)
-                .Cast<StatementNode>()
+                .Cast<BaseNode>()
                 .ToList();
         }
 
-        private List<StatementNode> _statements;
+        private List<BaseNode> _statements;
 
-        public IEnumerable<StatementNode> Statements { get { return _statements; } }
+        public IEnumerable<BaseNode> Statements { get { return _statements; } }
         
         public bool IsSingle { get { return _statements.Count == 1; } }
 

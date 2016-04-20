@@ -56,12 +56,35 @@ int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
    I45 = (int)(VDIISTRING(S45, 0, 0, 0));
    I70 = (int)(VDIISTRING(S70, 0, 0, 0));
    I71 = (int)(VDIISTRING(S71, 0, 0, 0));
-   if(ARRAY_810(1))
+   if(ARRAY_810[1])
    {
       I40 = (int)( Math.Pow(1, 0));
       I45 = (int)(0);
    }
-;
+   else
+   {
+      I40 = (int)(VDIISTRING(S40, 0, 0, 0));
+      B1 = (bool)(I40 < 6 && I45 > 0 && I45 < 14);
+      if(B1)
+      {
+         S = (string)(VDICSTRING(MASK[I40], MASK[1], I45, I45));
+         B2 = (bool)(S == @"-");
+         if(B2)
+         {
+            I40 = (int)(1);
+            I45 = (int)(0);
+         }
+         else if(B1)
+         {
+            I40 = (int)(2);
+         };
+      }
+      else
+      {
+         I40 = (int)(1);
+         I45 = (int)(0);
+      };
+   };
    return TGA_810;
 }
 
