@@ -44,6 +44,7 @@ namespace IronyFortran
             var expression = new NonTerminal("expression", typeof(NoGenerationNode));
             var expressionList = new NonTerminal("expressionList", typeof(ExpressionListNode));
             var assignment = new NonTerminal("assignment", typeof(AssignmentNode));
+            var arrayAssignment = new NonTerminal("arrayAssignment", typeof(ArrayAssignmentNode));
             var arrayRangeAssignment = new NonTerminal("arrayRangeAssignment", typeof(ArrayRangeAssignmentNode));
             var functionCall = new NonTerminal("functionCall", typeof(FunctionCallNode));
             var statement = new NonTerminal("statement", typeof(NoGenerationNode));
@@ -79,9 +80,11 @@ namespace IronyFortran
             expressionList.Rule = MakePlusRule(expressionList, ToTerm(","), expression);
             expression.Rule = value | functionCall | binExpr;
             assignment.Rule = identifier + "=" + expression + ";";
-            arrayRangeAssignment.Rule = identifier + "(" + intNumber + ":" + intNumber + ")" + "=" + "(/" + expressionList + "/)" + ";"; 
+            arrayAssignment.Rule = identifier + "(" + expression + ")" + "=" + expression + ";";
+            //arrayRangeAssignment.Rule = identifier + "(" + intNumber + ":" + intNumber + ")" + "=" + "(/" + expressionList + "/)" + ";"; 
+            arrayRangeAssignment.Rule = identifier + "(" + expression + ":" + expression + ")" + "=" + "(/" + expressionList + "/)" + ";";
 
-            statement.Rule = variableDec | assignment | arrayRangeAssignment | ifOneLineStatement | ifStatement;
+            statement.Rule = variableDec | assignment | arrayRangeAssignment | arrayAssignment | ifOneLineStatement | ifStatement;
             statementList.Rule = MakeStarRule(statementList, statement);
 
             function.Rule = functionHeader + statementList + functionFooter;

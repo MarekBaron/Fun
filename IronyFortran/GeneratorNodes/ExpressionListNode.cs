@@ -14,14 +14,40 @@ namespace IronyFortran.GeneratorNodes
         /// <summary/>
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            //dziwna konstrukcja po to, żeby nie generować przecinka po ostatnim expression
-            for (int i = 0; i < _expressions.Count - 1; i++)
+            GenerateInternal(aContext, anIndent, aSB, false);
+        }
+
+        private void GenerateInternal(GenerationContext aContext, int anIndent, StringBuilder aSB, bool aForVdicwert)
+        {
+            var exprsToGenerate = _expressions;
+            if (aForVdicwert)
             {
-                _expressions[i].Generate(aContext, anIndent, aSB);
+                //przenosimy ostatni na początek listy                
+                var last = exprsToGenerate.Last();
+                exprsToGenerate.Remove(last);
+                exprsToGenerate.Insert(0, last);
+            }
+            if (aForVdicwert)
+                aSB.Append("out ");           
+            //dziwna konstrukcja po to, żeby nie generować przecinka po ostatnim expression
+            for (int i = 0; i < exprsToGenerate.Count - 1; i++)
+            {
+                exprsToGenerate[i].Generate(aContext, anIndent, aSB);
                 aSB.Append(", ");
             }
-            _expressions.Last().Generate(aContext, anIndent, aSB);            
+            exprsToGenerate.Last().Generate(aContext, anIndent, aSB);            
         }
+
+        /// <summary>
+        /// Przd generacją przenosi pierwsze expression na koniec listy i generuje go jako out
+        /// </summary>
+        /// <param name="aContext"></param>
+        /// <param name="anIndent"></param>
+        /// <param name="aSB"></param>
+        public void GenerateVdicwert(GenerationContext aContext, int anIndent, StringBuilder aSB)
+        {
+            GenerateInternal(aContext, anIndent, aSB, true);
+        }    
 
         /// <summary/>
         protected override void InitInternal(AstContext context, ParseTreeNode parseNode)

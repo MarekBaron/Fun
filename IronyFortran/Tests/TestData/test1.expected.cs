@@ -1,4 +1,4 @@
-int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
+public override int TGA_810(ref string XTGA, ref VDIArray<string> ARRAY_810)
 {
    int TGA_810 = 0;
    string TGA = String.Empty;

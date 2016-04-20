@@ -14,8 +14,14 @@ namespace IronyFortran.GeneratorNodes
         public IdentifierValueNode VariableName { get; private set; }
 
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
-        {
-            aSB.AppendFormat("{0} = ({1})(", VariableName.Value, aContext.VariableType(VariableName.Value));
+        {            
+            var variableType = aContext.VariableType(VariableName.Value);
+            aSB.AppendFormat("{0} = ({1})", VariableName.Value, variableType);            
+            if (Value is StringLiteralValueNode && (variableType != "string"))
+            {
+                aSB.AppendFormat("{0}.Parse", aContext.VariableType(VariableName.Value));
+            }
+            aSB.Append("(");            
             Value.Generate(aContext, anIndent, aSB);
             aSB.Append(")");
         }
