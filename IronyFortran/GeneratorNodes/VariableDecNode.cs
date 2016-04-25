@@ -31,7 +31,7 @@ namespace IronyFortran.GeneratorNodes
         protected override void InitInternal(AstContext context, ParseTreeNode treeNode)
         {           
             var nodes = treeNode.GetMappedChildNodes();
-            Type = nodes[0].Token == null ? "string" : MapType(nodes[0].Token.ValueString);
+            Type = MapType(nodes[0]);
             _variables = nodes[1].ChildNodes.Select(n => new Variable(Type, n)).ToList();
         }
 
