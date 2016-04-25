@@ -1,4 +1,4 @@
-LOGICAL FUNCTION CheckIndexes(iTgaNr, sIDXs);Prueft ob alle Indizien in TGA-Nummer sind gueltig;
+LOGICAL FUNCTION CheckIndexes(iTgaNr, sIDXs);
 INTEGER iTgaNr(1:18);
 INTEGER iCounter, iIdx;
 CHARACTER(6) sIDXs(1:18);
