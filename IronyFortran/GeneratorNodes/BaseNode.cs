@@ -75,14 +75,16 @@ namespace IronyFortran.GeneratorNodes
         private static Dictionary<string, string> _typeMapping = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
             {"INTEGER", "int" },
-            {"LOGICAL", "bool" }
+            {"LOGICAL", "bool" },
+            {"REAL", "double" }
         };
 
         private static Dictionary<string, string> _defaultValues = new Dictionary<string, string>()
         {
             {"int", "0" },
             {"string", "String.Empty" },
-            {"bool", "false" }
+            {"bool", "false" },
+            {"double", "0d" }
         };
 
         public int Position

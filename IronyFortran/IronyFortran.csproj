@@ -69,6 +69,7 @@
     <Compile Include="GeneratorNodes\IfStatementNode.cs" />
     <Compile Include="GeneratorNodes\LiteralValueNode.cs" />
     <Compile Include="GeneratorNodes\NoGenerationNode.cs" />
+    <Compile Include="GeneratorNodes\NumberValueNode.cs" />
     <Compile Include="GeneratorNodes\ParExpressionNode.cs" />
     <Compile Include="GeneratorNodes\ProgramNode.cs" />
     <Compile Include="GeneratorNodes\StatementListNode.cs" />

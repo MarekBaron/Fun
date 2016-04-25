@@ -18,7 +18,7 @@ namespace IronyFortran
             var identifier = new IdentifierTerminal("identifier");
             identifier.AstConfig.NodeType = typeof(IdentifierValueNode);
             var number = new NumberLiteral("number");
-            number.AstConfig.NodeType = typeof(LiteralValueNode);
+            number.AstConfig.NodeType = typeof(NumberValueNode);
             var intNumber = new NumberLiteral("intNumber", NumberOptions.IntOnly);
             intNumber.AstConfig.NodeType = typeof(LiteralValueNode);
             var stringValue = new StringLiteral("stringValue", "'");
@@ -61,7 +61,7 @@ namespace IronyFortran
 
             //rules //NIE SKLEJAć STRINGÓW!!! np. ")" + ";"
             stringType.Rule = ToTerm("CHARACTER") + "(" + intNumber + ")";
-            builtinType.Rule = ToTerm("INTEGER") | "CHARACTER" | stringType | "LOGICAL";
+            builtinType.Rule = ToTerm("INTEGER") | "CHARACTER" | stringType | "LOGICAL" | "REAL";
             boolValue.Rule = ToTerm(".true.") | ".false.";
 
             paramList.Rule = MakeStarRule(paramList, ToTerm(","), identifier);
@@ -104,17 +104,17 @@ namespace IronyFortran
             program.Rule = MakePlusRule(program, function);
             this.Root = program;
 
-            RegisterOperators(10, "?", ".not.");
-            RegisterOperators(15, ".and.", ".or.");
-            RegisterOperators(20, "==", "<", "<=", ">", ">=");
-            RegisterOperators(30, "+", "-");
-            RegisterOperators(40, "*", "/");
-            RegisterOperators(50, Associativity.Right, "**");
+            this.RegisterOperators(10, "?", ".not.");
+            this.RegisterOperators(15, ".and.", ".or.");
+            this.RegisterOperators(20, "==", "<", "<=", ">", ">=");
+            this.RegisterOperators(30, "+", "-");
+            this.RegisterOperators(40, "*", "/");
+            this.RegisterOperators(50, Associativity.Right, "**");
 
             this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)", "if", "then", "else", "elseif", "endif", "do", "while", "enddo");
             this.MarkTransient(builtinType, statement, value, expression, binOp, unOp, elseIfClauseListElem);
             this.MarkReservedWords("if", "then", "else", "elseif", "do", "while", "enddo");
-
+            
             this.LanguageFlags |= LanguageFlags.CreateAst;
 
         }
