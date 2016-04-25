@@ -36,7 +36,7 @@ namespace IronyFortran
             var binOp = new NonTerminal("binOp");
             var binExpr = new NonTerminal("binExp", typeof(BinExprNode));
             var unOp = new NonTerminal("unOp");
-            var unExpr = new NonTerminal("unExpr");
+            var unExpr = new NonTerminal("unExpr", typeof(UnExprNode));
             var ifOneLineStatement = new NonTerminal("ifOneLineStatement", typeof(IfOneLineStatementNode));
             var ifStatement = new NonTerminal("ifStatement", typeof(IfStatementNode));
             var elseIfClause = new NonTerminal("elseIfClause", typeof(ElseIfClauseNode));
@@ -44,9 +44,9 @@ namespace IronyFortran
             var elseIfClauseList = new NonTerminal("elseIfClauseList", typeof(ElseIfClauseListNode));
             var elseIfClauseListElem = new NonTerminal("elseIfClauseListElem");
             var elseClause_opt = new NonTerminal("elseStatement_opt");
-            var doWhileStatement = new NonTerminal("doWhile");
+            var doWhileStatement = new NonTerminal("doWhile", typeof(DoWhileNode));
             var expression = new NonTerminal("expression");
-            var parExpression = new NonTerminal("parExpression");
+            var parExpression = new NonTerminal("parExpression", typeof(ParExpressionNode));
             var expressionList = new NonTerminal("expressionList", typeof(ExpressionListNode));
             var assignment = new NonTerminal("assignment", typeof(AssignmentNode));
             var arrayAssignment = new NonTerminal("arrayAssignment", typeof(ArrayAssignmentNode));
@@ -104,15 +104,15 @@ namespace IronyFortran
             program.Rule = MakePlusRule(program, function);
             this.Root = program;
 
-            RegisterOperators(10, "?");
+            RegisterOperators(10, "?", ".not.");
             RegisterOperators(15, ".and.", ".or.");
             RegisterOperators(20, "==", "<", "<=", ">", ">=");
             RegisterOperators(30, "+", "-");
             RegisterOperators(40, "*", "/");
             RegisterOperators(50, Associativity.Right, "**");
 
-            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)", "if", "then", "else", "elseif", "endif");
-            this.MarkTransient(builtinType, statement, value, expression, binOp, elseIfClauseListElem);
+            this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)", "if", "then", "else", "elseif", "endif", "do", "while", "enddo");
+            this.MarkTransient(builtinType, statement, value, expression, binOp, unOp, elseIfClauseListElem);
             this.MarkReservedWords("if", "then", "else", "elseif", "do", "while", "enddo");
 
             this.LanguageFlags |= LanguageFlags.CreateAst;

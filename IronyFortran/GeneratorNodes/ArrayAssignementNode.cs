@@ -8,7 +8,7 @@ using Irony.Parsing;
 
 namespace IronyFortran.GeneratorNodes
 {
-    public class ArrayAssignmentNode : BaseNode
+    public class ArrayAssignmentNode : StatementNode
     {
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {

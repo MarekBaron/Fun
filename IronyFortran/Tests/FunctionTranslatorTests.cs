@@ -12,11 +12,12 @@ namespace IronyFortran.Tests
     [TestFixture]
     public class FunctionTranslatorTests
     {
-        [TestCase("test1")]
-        [TestCase("arrayAssign")]
+        [TestCase("varDec")]
+        [TestCase("arrayAssign")]                
         [TestCase("ifelseelseif")]
+        [TestCase("test1")]
         [TestCase("translation_1")]
-        //[TestCase("translation_2")]
+        [TestCase("translation_2")]
         public void TestTranslation(string aFilename)
         {
             var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Tests\TestData"));
@@ -31,6 +32,8 @@ namespace IronyFortran.Tests
             File.WriteAllText(outputFilename, output);
 
             Assert.That(errors, Is.Empty);
+
+            FileAssert.Exists(expectedFilename);
             FileAssert.AreEqual(expectedFilename, outputFilename);            
         }        
     }

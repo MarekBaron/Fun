@@ -65,7 +65,7 @@ namespace IronyFortran.GeneratorNodes
             InitInternal(aContext, aParseNode);
         }
 
-        protected abstract void InitInternal(AstContext context, ParseTreeNode parseNode);
+        protected abstract void InitInternal(AstContext aContext, ParseTreeNode aParseNode);
 
         public IEnumerable GetChildNodes()
         {

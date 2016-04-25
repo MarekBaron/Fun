@@ -1,0 +1,7 @@
+CHARACTER(58) FUNCTION JoinTgaNr(iTgaNr);
+CHARACTER(58) sTgaNrNew;
+CHARACTER(5) sTgaPart, bas;
+INTEGER iTgaNr(1:18);
+INTEGER iCounter;
+LOGICAL bIsTrue, bContinue;
+END FUNCTION TGA_810;
