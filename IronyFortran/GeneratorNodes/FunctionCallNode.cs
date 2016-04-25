@@ -11,7 +11,7 @@ namespace IronyFortran.GeneratorNodes
     /// <summary>
     /// Uwaga: tutaj także wpada odwołanie do tablicy!!!
     /// </summary>
-    public class FunctionCallNode : BaseNode
+    public class FunctionCallNode : StatementNode
     {
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {

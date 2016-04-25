@@ -56,6 +56,7 @@
     <Compile Include="GeneratorNodes\BaseNode.cs" />
     <Compile Include="GeneratorNodes\BinExprNode.cs" />
     <Compile Include="GeneratorNodes\BoolValueNode.cs" />
+    <Compile Include="GeneratorNodes\DoWhileNode.cs" />
     <Compile Include="GeneratorNodes\ElseIfClauseListNode.cs" />
     <Compile Include="GeneratorNodes\ElseIfClauseNode.cs" />
     <Compile Include="GeneratorNodes\ElseIfOneLineClauseNode.cs" />
@@ -68,10 +69,12 @@
     <Compile Include="GeneratorNodes\IfStatementNode.cs" />
     <Compile Include="GeneratorNodes\LiteralValueNode.cs" />
     <Compile Include="GeneratorNodes\NoGenerationNode.cs" />
+    <Compile Include="GeneratorNodes\ParExpressionNode.cs" />
     <Compile Include="GeneratorNodes\ProgramNode.cs" />
     <Compile Include="GeneratorNodes\StatementListNode.cs" />
     <Compile Include="GeneratorNodes\StatementNode.cs" />
     <Compile Include="GeneratorNodes\StringLiteralValueNode.cs" />
+    <Compile Include="GeneratorNodes\UnExprNode.cs" />
     <Compile Include="GeneratorNodes\Variable.cs" />
     <Compile Include="GeneratorNodes\VariableDecNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

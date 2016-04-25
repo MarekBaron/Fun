@@ -12,7 +12,7 @@ namespace IronyFortran.GeneratorNodes
     {
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            var variablesToGenerate = _variables.Where(v => !aContext.IsInputParameter(v.Name)).ToList();
+            var variablesToGenerate = GetVariablesToGenerate(aContext).ToList();
             if (!variablesToGenerate.Any())
                 return;
             var lastVariable = variablesToGenerate.Last();
@@ -32,12 +32,23 @@ namespace IronyFortran.GeneratorNodes
         {           
             var nodes = treeNode.GetMappedChildNodes();
             Type = MapType(nodes[0]);
-            _variables = nodes[1].ChildNodes.Select(n => new Variable(Type, n)).ToList();
+            Variables = nodes[1].ChildNodes
+                .Select(n => new Variable(Type, n))
+                .ToList();            
         }
 
         public string Type { get; private set; }
+                
+        public IEnumerable<Variable> Variables { get; private set; }
 
-        private List<Variable> _variables;
-        public IEnumerable<Variable> Variables { get { return _variables; } }
+        private IEnumerable<Variable> GetVariablesToGenerate(GenerationContext aContext)
+        {
+            return Variables.Where(v => !aContext.IsInputParameter(v.Name));
+        }
+
+        public override bool IsEmpty(GenerationContext aContext)
+        {
+            return !GetVariablesToGenerate(aContext).Any();
+        }
     }
 }
