@@ -30,13 +30,19 @@ namespace IronyFortran.GeneratorNodes
             }
             return indent;
         }
-
-        protected string MapType(string anOriginalType)
+        
+        protected string MapType(ParseTreeNode aParseTreeNode)
         {
-            var result = String.Empty;
-            if (!_typeMapping.TryGetValue(anOriginalType, out result))
-                throw new ArgumentException("Nieznany typ: " + anOriginalType);
-            return result;
+            if (aParseTreeNode.Token == null)
+                return "string";
+            else
+            {
+                var originalType = aParseTreeNode.Token.ValueString;
+                var result = String.Empty;
+                if (!_typeMapping.TryGetValue(originalType, out result))
+                    throw new ArgumentException("Nieznany typ: " + originalType);
+                return result;
+            }
         }
 
         protected string GetDefaultValue(string aType)

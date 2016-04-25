@@ -24,7 +24,7 @@ namespace IronyFortran.GeneratorNodes
 
         protected override void InitInternal(AstContext context, ParseTreeNode treeNode)
         {
-            ReturnType = MapType(treeNode.ChildNodes[0].Token.ValueString);
+            ReturnType = MapType(treeNode.ChildNodes[0]);
             Name = treeNode.ChildNodes[2].Token.ValueString;
             ParamNames = treeNode.ChildNodes[3].ChildNodes.Select(n => n.Token.ValueString).ToList();
         }

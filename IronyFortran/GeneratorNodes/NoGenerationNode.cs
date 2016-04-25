@@ -12,7 +12,7 @@ namespace IronyFortran.GeneratorNodes
     {
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            throw new InvalidOperationException("Wezeł nie przeznaczony do generacji");
+            throw new InvalidOperationException("Wezeł nie przeznaczony do generacji: " + ParseTreeNode);
         }
 
         public ParseTreeNode ParseTreeNode { get; private set; }

@@ -55,6 +55,7 @@
     <Compile Include="GeneratorNodes\AssignmentNode.cs" />
     <Compile Include="GeneratorNodes\BaseNode.cs" />
     <Compile Include="GeneratorNodes\BinExprNode.cs" />
+    <Compile Include="GeneratorNodes\BoolValueNode.cs" />
     <Compile Include="GeneratorNodes\ElseIfClauseListNode.cs" />
     <Compile Include="GeneratorNodes\ElseIfClauseNode.cs" />
     <Compile Include="GeneratorNodes\ElseIfOneLineClauseNode.cs" />
