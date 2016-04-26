@@ -48,10 +48,10 @@ namespace IronyFortran.GeneratorNodes
         protected override void InitInternal(AstContext context, ParseTreeNode parseNode)
         {            
             Condition = (BaseNode)parseNode.ChildNodes[0].AstNode;
-            TrueStatements = (BaseNode)parseNode.ChildNodes[1].AstNode;
-            ElseIfClauseList = (ElseIfClauseListNode)parseNode.ChildNodes[2].AstNode;
-            if(parseNode.ChildNodes[3].ChildNodes.Any())
-                ElseStatements = (BaseNode)parseNode.ChildNodes[3].ChildNodes[0].AstNode;
+            TrueStatements = (BaseNode)parseNode.ChildNodes[2].AstNode;
+            ElseIfClauseList = (ElseIfClauseListNode)parseNode.ChildNodes[3].AstNode;
+            if(parseNode.ChildNodes[4].ChildNodes.Any())
+                ElseStatements = (BaseNode)parseNode.ChildNodes[4].ChildNodes[0].AstNode;
 
         }
 

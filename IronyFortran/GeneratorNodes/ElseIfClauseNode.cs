@@ -38,7 +38,7 @@ namespace IronyFortran.GeneratorNodes
             if (IsEmpty)
                 return;
             Condition = (BaseNode)parseNode.ChildNodes[0].AstNode;
-            Statements = (BaseNode)parseNode.ChildNodes[1].AstNode;
+            Statements = (BaseNode)parseNode.ChildNodes[2].AstNode;
         }
 
         public bool IsEmpty { get; private set; }
