@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="FortranGrammar.cs" />
     <Compile Include="FunctionTranslator.cs" />
+    <Compile Include="FunctionWrapperData.cs" />
     <Compile Include="GenerationContext.cs" />
     <Compile Include="GeneratorNodes\ArrayAssignementNode.cs" />
     <Compile Include="GeneratorNodes\ArrayRangeAssignmentNode.cs" />

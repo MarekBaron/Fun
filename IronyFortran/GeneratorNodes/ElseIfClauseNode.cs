@@ -21,7 +21,7 @@ namespace IronyFortran.GeneratorNodes
         /// <param name="aSB"></param>
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            if (IsEmpty)
+            if (_isEmpty)
                 return;
             aSB.Append("else if(");
             Condition.Generate(aContext, anIndent, aSB);
@@ -34,14 +34,14 @@ namespace IronyFortran.GeneratorNodes
 
         protected override void InitInternal(AstContext context, ParseTreeNode parseNode)
         {
-            IsEmpty = !parseNode.ChildNodes.Any();
-            if (IsEmpty)
+            _isEmpty = !parseNode.ChildNodes.Any();
+            if (_isEmpty)
                 return;
             Condition = (BaseNode)parseNode.ChildNodes[0].AstNode;
             Statements = (BaseNode)parseNode.ChildNodes[2].AstNode;
         }
 
-        public bool IsEmpty { get; private set; }
+        private bool _isEmpty;
         public BaseNode Condition { get; private set; }
         public BaseNode Statements { get; private set; }
 

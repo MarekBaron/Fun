@@ -15,13 +15,13 @@ namespace IronyFortran.Tests
         [TestCase("varDec")]
         [TestCase("arrayAssign")]                
         [TestCase("ifelseelseif")]
-        [TestCase("comments")] //nie przechodzi
+        [TestCase("comments")]
         [TestCase("nestedArrayAccess")]
         [TestCase("PowerOperator")]
+        [TestCase("nonPredefinedFunctionCall")]
         [TestCase("test1")]
         [TestCase("translation_1")]
-        [TestCase("translation_2")]
-        //[TestCase("translation_3")] //notPredefinied function call
+        [TestCase("translation_2")]        
         [TestCase("translation_4")]
         [TestCase("translation_6")]
 
