@@ -15,7 +15,7 @@ namespace IronyFortran.Tests
         [TestCase("varDec")]
         [TestCase("arrayAssign")]                
         [TestCase("ifelseelseif")]
-        //[TestCase("comments")] //nie przechodzi
+        [TestCase("comments")] //nie przechodzi
         [TestCase("nestedArrayAccess")]
         [TestCase("PowerOperator")]
         [TestCase("test1")]

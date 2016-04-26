@@ -29,7 +29,7 @@ namespace IronyFortran.GeneratorNodes
         protected override void InitInternal(AstContext context, ParseTreeNode parseNode)
         {
             Condition = (BaseNode)parseNode.ChildNodes[0].AstNode;
-            Statements = (BaseNode)parseNode.ChildNodes[1].AstNode;
+            Statements = (BaseNode)parseNode.ChildNodes[2].AstNode;
         }
 
         /// <summary/>

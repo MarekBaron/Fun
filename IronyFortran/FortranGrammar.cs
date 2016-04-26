@@ -23,7 +23,12 @@ namespace IronyFortran
             intNumber.AstConfig.NodeType = typeof(LiteralValueNode);
             var stringValue = new StringLiteral("stringValue", "'");
             stringValue.AstConfig.NodeType = typeof(StringLiteralValueNode);
-           
+            //uwaga: eos oznacza End Of Statement, czyli średnik, po którym może występować opcjonalny komentarz
+            //nie udało mi się tego uzyskać w bardziej elegancki sposób
+            var eos = new CommentTerminal("comment", ";", "\n", "\r\n");
+            eos.AstConfig.NodeType = typeof(NoGenerationNode);
+            eos.Category = TokenCategory.Content;
+
             //nonterminals            
             var builtinType = new NonTerminal("builtinType");
             var stringType = new NonTerminal("stringType");
@@ -65,12 +70,12 @@ namespace IronyFortran
             boolValue.Rule = ToTerm(".true.") | ".false.";
 
             paramList.Rule = MakeStarRule(paramList, ToTerm(","), identifier);
-            functionHeader.Rule = builtinType + ToTerm("FUNCTION") + identifier + "(" + paramList + ")" + ";";
-            functionFooter.Rule = ToTerm("END") + ToTerm("FUNCTION") + identifier + ";";           
+            functionHeader.Rule = builtinType + ToTerm("FUNCTION") + identifier + "(" + paramList + ")" + eos;
+            functionFooter.Rule = ToTerm("END") + ToTerm("FUNCTION") + identifier + eos;           
 
             variableDecListElem.Rule = identifier | identifier + "(" + intNumber + ( Empty | ":" + intNumber ) + ")";
             variableDecList.Rule = MakeStarRule(variableDecList, ToTerm(","), variableDecListElem);
-            variableDec.Rule = builtinType + variableDecList + ";";
+            variableDec.Rule = builtinType + variableDecList + eos;
 
             functionCall.Rule = identifier + "(" + expressionList + ")";
             value.Rule = stringValue | intNumber | number | identifier | boolValue;
@@ -80,22 +85,22 @@ namespace IronyFortran
             unOp.Rule = ToTerm(".not.") | "+" | "-";
             unExpr.Rule = unOp + expression;
                         
-            ifStatement.Rule = ToTerm("if") + "(" + expression + ")" + "then" + ";" + statementList + elseIfClauseList + elseClause_opt + "endif" + ";";
+            ifStatement.Rule = ToTerm("if") + "(" + expression + ")" + "then" + eos + statementList + elseIfClauseList + elseClause_opt + "endif" + eos;
             ifOneLineStatement.Rule = ToTerm("if") + "(" + expression + ")" + statement;
             elseClause_opt.Rule = Empty | ToTerm("else") + ";" + statementList;
-            elseIfClause.Rule = ToTerm("elseif") + "(" + expression + ")" + "then" + ";" + statementList;
+            elseIfClause.Rule = ToTerm("elseif") + "(" + expression + ")" + "then" + eos + statementList;
             elseIfOneLineClause.Rule = ToTerm("elseif") + "(" + expression + ")" + statement;
             elseIfClauseListElem.Rule = elseIfClause | elseIfOneLineClause;
             elseIfClauseList.Rule = MakeStarRule(elseIfClauseList, elseIfClauseListElem);
 
-            doWhileStatement.Rule = ToTerm("do") + "while" + "(" + expression + ")" + ";" + statementList + "enddo" + ";";
+            doWhileStatement.Rule = ToTerm("do") + "while" + "(" + expression + ")" + eos + statementList + "enddo" + eos;
 
             parExpression.Rule = "(" + expression + ")";
             expressionList.Rule = MakePlusRule(expressionList, ToTerm(","), expression);
             expression.Rule = value | functionCall | binExpr | unExpr | parExpression;
-            assignment.Rule = identifier + "=" + expression + ";";
-            arrayAssignment.Rule = identifier + "(" + expression + ")" + "=" + expression + ";";            
-            arrayRangeAssignment.Rule = identifier + "(" + expression + ":" + expression + ")" + "=" + "(/" + expressionList + "/)" + ";";
+            assignment.Rule = identifier + "=" + expression + eos;
+            arrayAssignment.Rule = identifier + "(" + expression + ")" + "=" + expression + eos;            
+            arrayRangeAssignment.Rule = identifier + "(" + expression + ":" + expression + ")" + "=" + "(/" + expressionList + "/)" + eos;
 
             statement.Rule = variableDec | assignment | arrayRangeAssignment | arrayAssignment | ifOneLineStatement | ifStatement | doWhileStatement;
             statementList.Rule = MakeStarRule(statementList, statement);
@@ -114,7 +119,9 @@ namespace IronyFortran
             this.MarkPunctuation(";", ",", "(", ")", "[", "]", ":", "=", "(/", "/)", "if", "then", "else", "elseif", "endif", "do", "while", "enddo");
             this.MarkTransient(builtinType, statement, value, expression, binOp, unOp, elseIfClauseListElem);
             this.MarkReservedWords("if", "then", "else", "elseif", "do", "while", "enddo");
-            
+
+            //NonGrammarTerminals.Add(eos);
+
             this.LanguageFlags |= LanguageFlags.CreateAst;
 
         }
