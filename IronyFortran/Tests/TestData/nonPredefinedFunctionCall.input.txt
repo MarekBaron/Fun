@@ -1,3 +1,10 @@
+LOGICAL FUNCTION FindPointer(sRecType, iIdx700, iIdxParent, iPointer);
+CHARACTER(6) sRecType;
+INTEGER iPointer, iIdx700, iIdxParent;
+INTEGER iIdx, iLenStr;
+;sam kod jest nieistotny
+FindPointer=bOK;
+END FUNCTION FindPointer;
 CHARACTER(256) FUNCTION MakeOrderNumber(OrderNr, sRecType, iTgaNr, iVarID, iParentID, bCorrect);
 CHARACTER(70) OrderNr, NewOrderNr;
 CHARACTER(6) sRecType;

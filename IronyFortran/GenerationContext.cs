@@ -59,5 +59,29 @@ namespace IronyFortran
         }
 
         public string CurrentFunctionName { get; set; }
+
+        public readonly Dictionary<string, FunctionWrapperData> FunctionWrappers = new Dictionary<string, FunctionWrapperData>(StringComparer.OrdinalIgnoreCase);
+
+        public string RegisterFunctionWrapper(FunctionHeaderNode aFunctionHeader, IEnumerable<bool> anIsRefParam)
+        {
+            FunctionWrapperData fwd;
+            if(!FunctionWrappers.TryGetValue(aFunctionHeader.Name, out fwd))
+            {
+                fwd = new FunctionWrapperData(aFunctionHeader);
+                FunctionWrappers[fwd.FunctionName] = fwd;
+            }
+            return fwd.RegisterVersion(anIsRefParam);            
+        }
+
+        private readonly Dictionary<string, FunctionHeaderNode> _functions = new Dictionary<string, FunctionHeaderNode>(StringComparer.OrdinalIgnoreCase);
+        public void RegisterFunction(FunctionHeaderNode aFunctionHeader)
+        {
+            _functions[aFunctionHeader.Name] = aFunctionHeader;
+        }
+
+        public FunctionHeaderNode GetFunctionHeaderNode(string aFunctionName)
+        {
+            return _functions[aFunctionName];
+        }
     }
 }

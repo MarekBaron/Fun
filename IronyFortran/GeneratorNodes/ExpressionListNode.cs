@@ -14,10 +14,10 @@ namespace IronyFortran.GeneratorNodes
         /// <summary/>
         public override void Generate(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            GenerateInternal(aContext, anIndent, aSB, false);
+            GenerateInternal(aContext, anIndent, aSB, false, null);
         }
 
-        private void GenerateInternal(GenerationContext aContext, int anIndent, StringBuilder aSB, bool aForVdicwert)
+        private void GenerateInternal(GenerationContext aContext, int anIndent, StringBuilder aSB, bool aForVdicwert, bool[] aRefParamPositions)
         {
             var exprsToGenerate = _expressions;
             if (aForVdicwert)
@@ -28,14 +28,15 @@ namespace IronyFortran.GeneratorNodes
                 exprsToGenerate.Insert(0, last);
             }
             if (aForVdicwert)
-                aSB.Append("out ");           
-            //dziwna konstrukcja po to, żeby nie generować przecinka po ostatnim expression
-            for (int i = 0; i < exprsToGenerate.Count - 1; i++)
+                aSB.Append("out ");                       
+            for (int i = 0; i < exprsToGenerate.Count; i++)
             {
+                if (aRefParamPositions != null && aRefParamPositions[i])
+                    aSB.Append("ref ");
                 exprsToGenerate[i].Generate(aContext, anIndent, aSB);
-                aSB.Append(", ");
-            }
-            exprsToGenerate.Last().Generate(aContext, anIndent, aSB);            
+                if(i < exprsToGenerate.Count - 1)
+                    aSB.Append(", ");
+            }            
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace IronyFortran.GeneratorNodes
         /// <param name="aSB"></param>
         public void GenerateVdicwert(GenerationContext aContext, int anIndent, StringBuilder aSB)
         {
-            GenerateInternal(aContext, anIndent, aSB, true);
+            GenerateInternal(aContext, anIndent, aSB, true, null);
         }    
 
         /// <summary/>
@@ -62,5 +63,10 @@ namespace IronyFortran.GeneratorNodes
 
         /// <summary/>
         public IEnumerable<BaseNode> Expressions { get { return _expressions; } }
+
+        internal void GenerateRefVal(GenerationContext aContext, IEnumerable<bool> aRefParamPositions, StringBuilder aSB)
+        {
+            GenerateInternal(aContext, 0, aSB, false, aRefParamPositions.ToArray());
+        }
     }
 }

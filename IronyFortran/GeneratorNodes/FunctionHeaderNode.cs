@@ -20,7 +20,8 @@ namespace IronyFortran.GeneratorNodes
                 Name == "TGA_810" ? "override " : String.Empty,
                 ReturnType, 
                 Name, 
-                String.Join(", ", ParamNames.Select(n => "ref " + GetParamSignature(aContext, n)))));            
+                String.Join(", ", ParamNames.Select(n => "ref " + GetParamSignature(aContext, n)))));
+            aContext.RegisterFunction(this);
         }
 
         protected override void InitInternal(AstContext context, ParseTreeNode treeNode)

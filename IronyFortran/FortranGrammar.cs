@@ -102,7 +102,7 @@ namespace IronyFortran
             arrayAssignment.Rule = identifier + "(" + expression + ")" + "=" + expression + eos;            
             arrayRangeAssignment.Rule = identifier + "(" + expression + ":" + expression + ")" + "=" + "(/" + expressionList + "/)" + eos;
 
-            statement.Rule = variableDec | assignment | arrayRangeAssignment | arrayAssignment | ifOneLineStatement | ifStatement | doWhileStatement;
+            statement.Rule = variableDec | assignment | arrayRangeAssignment | arrayAssignment | ifOneLineStatement | ifStatement | doWhileStatement | eos;
             statementList.Rule = MakeStarRule(statementList, statement);
 
             function.Rule = functionHeader + statementList + functionFooter;

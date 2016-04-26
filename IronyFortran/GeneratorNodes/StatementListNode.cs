@@ -25,7 +25,7 @@ namespace IronyFortran.GeneratorNodes
             var nodes = treeNode.GetMappedChildNodes();
             _statements = nodes
                 .Select(n => n.AstNode)
-                .Cast<StatementNode>()
+                .OfType<StatementNode>()
                 .ToList();
         }
 

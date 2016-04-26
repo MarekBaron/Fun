@@ -34,8 +34,18 @@ namespace IronyFortran
                 var gc = BuildGenerationContext((ProgramNode)parseTree.Root.AstNode);
                 var sb = new StringBuilder();
                 ((ProgramNode)parseTree.Root.AstNode).Generate(gc, 0, sb);
+
+                GenerateFunctionWrappers(gc, sb);
                 return sb.ToString();
             }                        
+        }
+
+        private void GenerateFunctionWrappers(GenerationContext aGenerationContext, StringBuilder aSB)
+        {
+            foreach(var fwd in aGenerationContext.FunctionWrappers.Values)
+            {
+                fwd.Generate(aSB);
+            }
         }
 
         private GenerationContext BuildGenerationContext(ProgramNode aProgramNode)
