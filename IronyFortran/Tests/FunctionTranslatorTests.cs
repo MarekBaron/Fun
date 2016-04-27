@@ -19,7 +19,6 @@ namespace IronyFortran.Tests
         [TestCase("nestedArrayAccess")]
         [TestCase("PowerOperator")]
         [TestCase("nonPredefinedFunctionCall")]
-        [TestCase("test1")]
         [TestCase("translation_1")]
         [TestCase("translation_2")]        
         [TestCase("translation_4")]

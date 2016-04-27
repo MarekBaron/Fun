@@ -18,9 +18,10 @@ namespace IronyFortran.GeneratorNodes
             aSB.AppendLine(String.Format("{0}public {1}{2} {3}({4})",
                 Indent(anIndent),
                 Name == "TGA_810" ? "override " : String.Empty,
-                ReturnType, 
-                Name, 
-                String.Join(", ", ParamNames.Select(n => "ref " + GetParamSignature(aContext, n)))));
+                ReturnType,
+                Name,
+                //String.Join(", ", ParamNames.Select(n => "ref " + GetParamSignature(aContext, n)))));
+                ParametersLine(aContext)));
             aContext.RegisterFunction(this);
         }
 
@@ -33,9 +34,14 @@ namespace IronyFortran.GeneratorNodes
 
         public IEnumerable<string> ParamNames { get; private set; }
 
+        public string ParametersLine(GenerationContext aContext, IEnumerable<bool> anIsRefParamData = null)
+        {
+            return String.Join(", ", ParamNames.Select((n, i) => (anIsRefParamData != null && !anIsRefParamData.ElementAt(i) ? String.Empty : "ref ") + GetParamSignature(aContext, n)));
+        }
+
         private string GetParamSignature(GenerationContext aContext, string aParamName)
         {
-            var variable = aContext.GetVariable(aParamName);
+            var variable = aContext.GetVariable(aParamName, Name);
             if (variable.IsArray)
                 return String.Format("VDIArray<{0}> {1}", variable.Type, variable.Name);
             else

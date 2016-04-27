@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Irony.Ast;
 using Irony.Parsing;
 
@@ -25,8 +21,8 @@ namespace IronyFortran.GeneratorNodes
         protected override void InitInternal(AstContext context, ParseTreeNode parseNode)
         {
             VariableName = (IdentifierValueNode)parseNode.ChildNodes[0].AstNode;
-            RangeFrom = parseNode.ChildNodes[1].Token.ValueString;
-            RangeTo = parseNode.ChildNodes[2].Token.ValueString;
+            RangeFrom = parseNode.ChildNodes[1].Token.ValueString.ToUpper();
+            RangeTo = parseNode.ChildNodes[2].Token.ValueString.ToUpper();
             ExpressionList = (ExpressionListNode)parseNode.ChildNodes[3].AstNode;
         }
 

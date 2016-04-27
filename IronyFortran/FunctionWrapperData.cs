@@ -32,21 +32,40 @@ namespace IronyFortran
             return FunctionName +"_" + String.Join(String.Empty, anIsRefParamData.Select(i => i ? "r" : "v"));
         }
 
-        public void Generate(StringBuilder aSB)
+        public void Generate(GenerationContext aContext, StringBuilder aSB)
         {
             aSB.Append("#region function wrappers for ");
             aSB.AppendLine(FunctionName);
             foreach(var isRefParamData in Versions)
             {
                 aSB.AppendLine();
-                aSB.AppendFormat("public {0} {1}(", FunctionHeaderNode.ReturnType, WrappedFunctionName(isRefParamData));
-                aSB.Append("TODO");
+                aSB.AppendFormat("public {0} {1}(", FunctionHeaderNode.ReturnType, WrappedFunctionName(isRefParamData));                
+                aSB.Append(FunctionHeaderNode.ParametersLine(aContext, isRefParamData));
                 aSB.AppendLine(")");
                 aSB.AppendLine("{");
-                aSB.AppendLine("   TODO");
+                var paramNames = FunctionHeaderNode.ParamNames.ToArray();
+                for (var i =0; i < paramNames.Length; i++)
+                {
+                    if(!isRefParamData.ElementAt(i))
+                    {                        
+                        aSB.AppendFormat("   {0} {1}_wrappedLocal = {1};", aContext.GetVariable(paramNames[i], FunctionHeaderNode.Name).Type, paramNames[i]);
+                        aSB.AppendLine();
+                    }
+                }
+                aSB.AppendFormat("   return {0}(", FunctionHeaderNode.Name);
+                for (var i = 0; i < paramNames.Length; i++)
+                {                    
+                    aSB.AppendFormat("ref {0}", paramNames[i]);
+                    if (!isRefParamData.ElementAt(i))
+                        aSB.Append("_wrappedLocal");
+                    if (i != paramNames.Length - 1)
+                        aSB.Append(", ");                    
+                }
+                aSB.AppendLine(");");
                 aSB.AppendLine("}");
             }
 
+            aSB.AppendLine();
             aSB.AppendLine("#endregion");
         }
     }
