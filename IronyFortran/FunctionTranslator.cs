@@ -44,7 +44,7 @@ namespace IronyFortran
         {
             foreach(var fwd in aGenerationContext.FunctionWrappers.Values)
             {
-                fwd.Generate(aSB);
+                fwd.Generate(aGenerationContext, aSB);
             }
         }
 
