@@ -23,7 +23,6 @@ namespace IronyFortran.Tests
         [TestCase("translation_2")]        
         [TestCase("translation_4")]
         [TestCase("translation_6")]
-
         public void TestTranslation(string aFilename)
         {
             var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Tests\TestData"));
